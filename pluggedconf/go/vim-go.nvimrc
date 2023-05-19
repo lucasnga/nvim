@@ -56,4 +56,5 @@ autocmd FileType go nmap <buffer><leader>gfs :exec "GoFillStruct"<cr>
 
 " Require vim-go
 " inoremap <silent><buffer> . <esc>:call go#AliasGoImport()<cr>
-let g:go_gopls_enabled=0
+let g:go_gopls_enabled=1
+" let g:go_gopls_options = ['-remote=unix;/tmp/gopls-daemon-socket-500']
