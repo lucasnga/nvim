@@ -72,7 +72,7 @@ Plug 'bfredl/nvim-miniyank' " registers
 Plug 'moll/vim-bbye' " close the current buffer
 Plug 'wgwoods/vim-systemd-syntax' " systemd syntax and error
 Plug 'mattn/emmet-vim' " emmet for html
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf - poweful fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } } " fzf - poweful fuzzy finder
 Plug 'junegunn/fzf.vim'
 Plug 'wincent/ferret' " allow multisearch in current directory / multi replace as well
 Plug 'ap/vim-css-color' " display the hexadecimal colors - useful for css and color config
@@ -381,6 +381,3 @@ augroup numbertoggle
 augroup END
 
 autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" enable the mouse - who needs a mouse??
-" set mouse=a
