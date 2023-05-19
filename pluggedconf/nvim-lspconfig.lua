@@ -95,6 +95,17 @@ nvim_lsp.pylsp.setup {}
 nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
 nvim_lsp.clangd.setup {}
+nvim_lsp.ccls.setup {
+  init_options = {
+    compilationDatabaseDirectory = "build";
+    index = {
+      threads = 0;
+    };
+    clang = {
+      excludeArgs = { "-frounding-math"} ;
+    };
+  }
+}
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
