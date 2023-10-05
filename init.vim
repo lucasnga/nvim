@@ -28,6 +28,7 @@ Plug 'tpope/vim-surround' " surrounding text objects with whatever you want (par
 Plug 'tpope/vim-abolish' " easily search, substitute and abbreviate multiple version of words
 Plug 'tpope/vim-repeat' " the . command can repeat whatever you want!
 Plug 'tpope/vim-commentary' " keystroke to comment automatically depending on the file you're in
+Plug 'tpope/vim-speeddating'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'machakann/vim-highlightedyank' " Highlight briefly every yank text
 Plug 'machakann/vim-swap' " swap arguments in parenthesis
@@ -45,6 +46,7 @@ Plug 'reedes/vim-wordy' " Verify quality of writting (see :Wordy)
 Plug 'reedes/vim-lexical' " Dictionnary, thesaurus...
 Plug 'ron89/thesaurus_query.vim' " Thesaurus
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }
+Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 Plug 'chr4/nginx.vim' " nginx syntax colors
 
 Plug 'stephpy/vim-php-cs-fixer', {'for': 'php'}
@@ -54,14 +56,15 @@ Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
 
 " TODO: Do wypierdolenia/konwersji do LSP
 Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-ts-autotag'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'fatih/vim-go', {'for': 'go'} " general plugin
 Plug 'godoctor/godoctor.vim', {'for': 'go'} " refactoring
 Plug 'sebdah/vim-delve', {'for': 'go'} " debugger
 Plug 'mlaursen/vim-react-snippets'
-"Plug 'posva/vim-vue' " For Vue
-"Plug 'majutsushi/tagbar' " outliner
+" Plug 'posva/vim-vue' " For Vue
+Plug 'majutsushi/tagbar' " outliner
 Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']} " Nerdtree + modifications 
 " 'tiagofumo/vim-nerdtree-syntax-highlight' replacement
@@ -107,8 +110,13 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
 
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 Plug 'hashivim/vim-terraform'
+Plug 'yorinasub17/vim-terragrunt'
+" dba tools
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion'
 
 Plug 'folke/neodev.nvim'
 call plug#end()

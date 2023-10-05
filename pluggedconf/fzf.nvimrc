@@ -2,6 +2,7 @@ augroup fzf
   autocmd!
 augroup END
 
+let g:fzf_tags_command='ctags --recurse --verbose --append --extra=+q --fields=+aimS --c-kinds=+p --c++-kinds=+p'
 " Key mapping
 
 " History of file opened

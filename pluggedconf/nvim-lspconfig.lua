@@ -31,6 +31,8 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, sil
 vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, { noremap = true, silent = true })
 vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>p", vim.lsp.buf.format, { noremap = true, silent = true })
+vim.keymap.set("n", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
+vim.keymap.set("i", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
 -- vim
 -- nnoremap " gd    ","      vim.lsp.buf.definition()', { silent: true })
 -- nnoremap " <c-k> ","      vim.lsp.buf.signature_help()', { silent: true })
@@ -40,7 +42,7 @@ require("neodev").setup({
         enabled = true, -- when not enabled, neodev will not change any settings to the LSP server
         -- these settings will be used for your Neovim config directory
         runtime = true, -- runtime path
-        types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+        types = true,   -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
         plugins = true, -- installed opt or start plugins in packpath
         -- you can also specify the list of plugins to make available as a workspace library
         -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
@@ -64,18 +66,41 @@ local nvim_lsp = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-nvim_lsp.tsserver.setup {
-    init_options = {
-        maxTsServerMemory = 3072
-    }
-}
-
 local on_attach = function(client)
+    if vim.lsp.inlay_hint then
+        vim.lsp.inlay_hint(0, nil)
+    end
+
     require 'completion'.on_attach(client)
+    vim.api.nvim_exec2([[
+        augroup lsp
+            autocmd!
+            autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
+        augroup END
+    ]], { output = false })
+
 end
 
+nvim_lsp.tsserver.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+        maxTsServerMemory = 3072,
+        preferences = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+        }
+    }
+}
 nvim_lsp.rust_analyzer.setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     settings = {
         ["rust-analyzer"] = {
             cargo = {
@@ -91,21 +116,24 @@ nvim_lsp.stylelint_lsp.setup {}
 nvim_lsp.html.setup { capabilities = capabilities, }
 nvim_lsp.jsonls.setup { capabilities = capabilities, }
 nvim_lsp.cssls.setup { capabilities = capabilities, }
-nvim_lsp.pylsp.setup {}
+nvim_lsp.pylsp.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    ignore = { 'E501' },
+                    maxLineLength = 100
+                },
+                mccabe = { enabled = true }
+            }
+        }
+    }
+}
 nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
 nvim_lsp.clangd.setup {}
-nvim_lsp.ccls.setup {
-  init_options = {
-    compilationDatabaseDirectory = "build";
-    index = {
-      threads = 0;
-    };
-    clang = {
-      excludeArgs = { "-frounding-math"} ;
-    };
-  }
-}
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
@@ -165,8 +193,8 @@ cmp.setup({
     },
     sources = {
         { name = 'nvim_lsp' },
-        { name = 'ultisnips' },
         { name = 'buffer' },
+        { name = 'ultisnips' },
         { name = 'path' },
         { name = 'nvim_lua' }
     },

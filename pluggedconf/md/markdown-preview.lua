@@ -1,6 +1,6 @@
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = "*.md",
+    pattern = '*',
     callback = function()
-        vim.keymap.set("n", "<leader>M", ":exec 'MarkdownPreview'<CR>")
+        vim.keymap.set('n', '<leader>M', ":MarkdownPreview<CR>", { noremap = true })
     end
 })
