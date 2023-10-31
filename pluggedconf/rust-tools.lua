@@ -41,6 +41,7 @@ local opts = {
       show_parameter_hints = false,
       parameter_hints_prefix = "",
       other_hints_prefix = "",
+      highlight = "LspInlayHint"
     },
   },
 

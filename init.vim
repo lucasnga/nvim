@@ -49,20 +49,21 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 Plug 'chr4/nginx.vim' " nginx syntax colors
 
-Plug 'stephpy/vim-php-cs-fixer', {'for': 'php'}
-Plug 'nishigori/vim-php-dictionary', {'for': 'php'}
-Plug 'adoy/vim-php-refactoring-toolbox', {'for': 'php'}
-Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
+Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php'}
+Plug 'nishigori/vim-php-dictionary', { 'for': 'php'}
+Plug 'adoy/vim-php-refactoring-toolbox', { 'for': 'php'}
+Plug 'phpactor/phpactor', { 'for': 'php', 'do': 'composer install'}
 
 " TODO: Do wypierdolenia/konwersji do LSP
 Plug 'jiangmiao/auto-pairs'
 Plug 'windwp/nvim-ts-autotag'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'fatih/vim-go', {'for': 'go'} " general plugin
-Plug 'godoctor/godoctor.vim', {'for': 'go'} " refactoring
-Plug 'sebdah/vim-delve', {'for': 'go'} " debugger
-Plug 'mlaursen/vim-react-snippets'
+Plug 'ray-x/go.nvim'
+Plug 'ray-x/guihua.lua'
+Plug 'sebdah/vim-delve', { 'for': 'go'} " debugger
+" BUG: Posible performance issues
+" "Plug 'mlaursen/vim-react-snippets'
 " Plug 'posva/vim-vue' " For Vue
 Plug 'majutsushi/tagbar' " outliner
 Plug 'liuchengxu/vista.vim'
@@ -88,37 +89,40 @@ Plug 'lambdalisue/suda.vim' " Write file with sudo
 Plug 'junegunn/vim-peekaboo' " Display register values on \" and @
 Plug 'phux/vim-hardtime'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'fsharp/vim-fsharp', { 'for': 'fsharp', 'do': 'make fsautocomplete'}
 
-Plug 'rust-lang/rust.vim'
-Plug 'elzr/vim-json'
-Plug 'simrat39/rust-tools.nvim'
-Plug 'liuchengxu/graphviz.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'simrat39/rust-tools.nvim', { 'for': 'rust' }
+Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
 
 Plug 'mfussenegger/nvim-dap'
 
 Plug 'folke/lsp-colors.nvim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'onsails/lspkind-nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'nvim-treesitter/playground'
 
 Plug 'sainnhe/sonokai'
 
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
-Plug 'hashivim/vim-terraform'
+Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 Plug 'yorinasub17/vim-terragrunt'
 " dba tools
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion'
 
-Plug 'folke/neodev.nvim'
+Plug 'folke/neodev.nvim', { 'for': 'lua' }
 call plug#end()
 
 " +---------------+
@@ -134,7 +138,6 @@ endfor
 
 lua << EOF
 for k, v in ipairs(vim.fn.glob("~/.config/nvim/pluggedconf/**/*.lua", false, true)) do
-
     dofile(v)
 end
 EOF
@@ -313,7 +316,8 @@ highlight Normal guibg=None ctermbg=238
 highlight SignColumn ctermbg=NONE guibg=NONE
 highlight LineNr     ctermbg=NONE guibg=NONE
 highlight ColorColumn ctermbg=238
-hi VirtualTextError guifg=darkred guibg=lightgrey
+" hi VirtualTextError guifg=darkred guibg=lightgrey
+hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
 
 let g:loaded_python_provider = 0
 let g:loaded_perl_provider = 0

@@ -67,18 +67,17 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local on_attach = function(client)
-    if vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint(0, nil)
-    end
+    -- if vim.lsp.inlay_hint then
+    --     vim.lsp.inlay_hint(0, nil)
+    -- end
 
-    require 'completion'.on_attach(client)
-    vim.api.nvim_exec2([[
-        augroup lsp
-            autocmd!
-            autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
-        augroup END
-    ]], { output = false })
-
+-- TODO: Fix signature_help box of switch to keybinding
+--    vim.api.nvim_exec2([[
+--        augroup lsp
+--            autocmd!
+--            autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
+--        augroup END
+--    ]], { output = false })
 end
 
 nvim_lsp.tsserver.setup {
@@ -110,7 +109,6 @@ nvim_lsp.rust_analyzer.setup {
     }
 }
 nvim_lsp.bashls.setup {}
-nvim_lsp.gopls.setup {}
 -- nvim_lsp.graphql.setup{}
 nvim_lsp.stylelint_lsp.setup {}
 nvim_lsp.html.setup { capabilities = capabilities, }
@@ -126,14 +124,18 @@ nvim_lsp.pylsp.setup {
                     ignore = { 'E501' },
                     maxLineLength = 100
                 },
-                mccabe = { enabled = true }
+                mccabe = { enabled = true },
+                flake8 = { enabled = true }
             }
         }
     }
 }
 nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
-nvim_lsp.clangd.setup {}
+nvim_lsp.clangd.setup {
+    on_attach = on_attach,
+    capabilities = capabilities
+}
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
@@ -162,6 +164,82 @@ nvim_lsp.lua_ls.setup {
             },
         },
     },
+}
+
+nvim_lsp.csharp_ls.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        inlayHintsOptions = {
+            enableForParameters = false,
+            forLiteralParameters = false,
+            forIndexerParameters = false,
+            forObjectCreationParameters = false,
+            forOtherParameters = false,
+            suppressForParametersThatDifferOnlyBySuffix = false,
+            suppressForParametersThatMatchMethodIntent = false,
+            suppressForParametersThatMatchArgumentName = false,
+            enableForTypes = false,
+            forImplicitVariableTypes = false,
+            forLambdaParameterTypes = false,
+            forImplicitObjectCreation = false
+        },
+        FormattingOptions = {
+            EnableEditorConfigSupport = false,
+            OrganizeImports = false,
+            NewLine = '\n',
+            UseTabs = false,
+            TabSize = 2,
+            IndentationSize = 2,
+            SpacingAfterMethodDeclarationName = false,
+            SpaceWithinMethodDeclarationParenthesis = false,
+            SpaceBetweenEmptyMethodDeclarationParentheses = false,
+            SpaceAfterMethodCallName = false,
+            SpaceWithinMethodCallParentheses = false,
+            SpaceBetweenEmptyMethodCallParentheses = false,
+            SpaceAfterControlFlowStatementKeyword = true,
+            SpaceWithinExpressionParentheses = false,
+            SpaceWithinCastParentheses = false,
+            SpaceWithinOtherParentheses = false,
+            SpaceAfterCast = false,
+            SpacesIgnoreAroundVariableDeclaration = false,
+            SpaceBeforeOpenSquareBracket = false,
+            SpaceBetweenEmptySquareBrackets = false,
+            SpaceWithinSquareBrackets = false,
+            SpaceAfterColonInBaseTypeDeclaration = true,
+            SpaceAfterComma = true,
+            SpaceAfterDot = false,
+            SpaceAfterSemicolonsInForStatement = true,
+            SpaceBeforeColonInBaseTypeDeclaration = true,
+            SpaceBeforeComma = false,
+            SpaceBeforeDot = false,
+            SpaceBeforeSemicolonsInForStatement = false,
+            SpacingAroundBinaryOperator = single,
+            IndentBraces = false,
+            IndentBlock = true,
+            IndentSwitchSection = true,
+            IndentSwitchCaseSection = true,
+            IndentSwitchCaseSectionWhenBlock = true,
+            LabelPositioning = oneLess,
+            WrappingPreserveSingleLine = true,
+            WrappingKeepStatementsOnSingleLine = true,
+            NewLinesForBracesInTypes = true,
+            NewLinesForBracesInMethods = true,
+            NewLinesForBracesInProperties = true,
+            NewLinesForBracesInAccessors = true,
+            NewLinesForBracesInAnonymousMethods = true,
+            NewLinesForBracesInControlBlocks = true,
+            NewLinesForBracesInAnonymousTypes = true,
+            NewLinesForBracesInObjectCollectionArrayInitializers = true,
+            NewLinesForBracesInLambdaExpressionBody = true,
+            NewLineForElse = true,
+            NewLineForCatch = true,
+            NewLineForFinally = true,
+            NewLineForMembersInObjectInit = true,
+            NewLineForMembersInAnonymousTypes = true,
+            NewLineForClausesInQuery = true
+        }
+    }
 }
 
 require "fidget".setup {}
