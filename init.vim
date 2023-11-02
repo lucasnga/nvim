@@ -29,7 +29,6 @@ Plug 'tpope/vim-abolish' " easily search, substitute and abbreviate multiple ver
 Plug 'tpope/vim-repeat' " the . command can repeat whatever you want!
 Plug 'tpope/vim-commentary' " keystroke to comment automatically depending on the file you're in
 Plug 'tpope/vim-speeddating'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'machakann/vim-highlightedyank' " Highlight briefly every yank text
 Plug 'machakann/vim-swap' " swap arguments in parenthesis
 Plug 'wellle/targets.vim' " add new text object (can delete between comma with di, for example)
@@ -37,7 +36,7 @@ Plug 'chaoren/vim-wordmotion' " camel case motion
 Plug 'andymass/vim-matchup' " Match more stuff with % (html tag, LaTeX...)
 Plug 'amiorin/vim-project' " vim project for one specific vimrc / project + startify for startup cow
 Plug 'mhinz/vim-startify'
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular' " Align plugin
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' } " Distraction-free
 Plug 'junegunn/limelight.vim', { 'for': 'markdown' } " Hyperfocus-writing
@@ -48,6 +47,7 @@ Plug 'ron89/thesaurus_query.vim' " Thesaurus
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }
 Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 Plug 'chr4/nginx.vim' " nginx syntax colors
+Plug 'Darazaki/indent-o-matic'
 
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php'}
 Plug 'nishigori/vim-php-dictionary', { 'for': 'php'}
@@ -59,6 +59,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'windwp/nvim-ts-autotag'
 
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvimtools/none-ls.nvim'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'ray-x/go.nvim'
 Plug 'ray-x/guihua.lua'
 Plug 'sebdah/vim-delve', { 'for': 'go'} " debugger
@@ -67,9 +69,7 @@ Plug 'sebdah/vim-delve', { 'for': 'go'} " debugger
 " Plug 'posva/vim-vue' " For Vue
 Plug 'majutsushi/tagbar' " outliner
 Plug 'liuchengxu/vista.vim'
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']} " Nerdtree + modifications 
-" 'tiagofumo/vim-nerdtree-syntax-highlight' replacement
-Plug 'johnstef99/vim-nerdtree-syntax-highlight'
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'itchyny/lightline.vim' " status bar
 Plug 'simnalamburt/vim-mundo' " undo tree
 Plug 'bfredl/nvim-miniyank' " registers
@@ -83,7 +83,8 @@ Plug 'ap/vim-css-color' " display the hexadecimal colors - useful for css and co
 Plug 'simeji/winresizer' " easy way to rezise and exchange windows
 Plug 'yangmillstheory/vim-snipe' " replace f F t T to target easily the motion
 Plug 'AndrewRadev/splitjoin.vim' " Split arrays in PHP / struct in Go / other things
-Plug 'chrisbra/csv.vim' " CSV plugin
+" TODO: GO up and find replacements
+Plug 'chrisbra/csv.vim', { 'for': 'csv' } " CSV plugin
 Plug 'blueyed/vim-diminactive' " Plug to dim not-focused windows
 Plug 'lambdalisue/suda.vim' " Write file with sudo
 Plug 'junegunn/vim-peekaboo' " Display register values on \" and @
@@ -98,13 +99,12 @@ Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
 
 Plug 'mfussenegger/nvim-dap'
 
-Plug 'folke/lsp-colors.nvim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'onsails/lspkind-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'nvim-treesitter/playground'
 
 Plug 'sainnhe/sonokai'
 
@@ -112,7 +112,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+"Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
@@ -123,6 +123,8 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion'
 
 Plug 'folke/neodev.nvim', { 'for': 'lua' }
+" vim profiler
+" Plug 'stevearc/profile.nvim'
 call plug#end()
 
 " +---------------+
@@ -173,8 +175,6 @@ let g:vim_markdown_folding_disabled = 1
 
 syntax on
 
-" Weird hack for NERDTree to work
-let mapleader = "\\"
 map <SPACE> <leader>
 
 vmap <F2> !boxes -d stone
@@ -240,6 +240,10 @@ nnoremap <leader>wh <c-w>s
 " create vertival window
 nnoremap <leader>wv <c-w>v
 
+" update on hold
+" autocmd InsertLeave * silent! update
+autocmd CursorHold * silent! update
+
 " delete character after cursor in insert mode
 inoremap <C-d> <Del>
 
@@ -303,6 +307,8 @@ cnoremap w!! execute ':w suda://%'
 " if has('termguicolors')
 " endif
 
+let g:sonokai_style = 'shusia'
+let g:sonokai_better_performance = 1
 colorscheme sonokai
 
 if $TERM == "fbterm"
@@ -316,7 +322,7 @@ highlight Normal guibg=None ctermbg=238
 highlight SignColumn ctermbg=NONE guibg=NONE
 highlight LineNr     ctermbg=NONE guibg=NONE
 highlight ColorColumn ctermbg=238
-" hi VirtualTextError guifg=darkred guibg=lightgrey
+" " hi VirtualTextError guifg=darkred guibg=lightgrey
 hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
 
 let g:loaded_python_provider = 0

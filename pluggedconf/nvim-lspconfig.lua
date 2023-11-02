@@ -3,7 +3,7 @@ vim.o.hidden = true
 -- Better display for messages
 vim.o.cmdheight = 2
 -- Smaller updatetime for CursorHold & CursorHoldI
-vim.o.updatetime = 100
+vim.o.updatetime = 1000
 -- don't give |ins-completion-menu| messages.
 vim.o.shortmess = vim.o.shortmess .. 'c'
 -- always show signcolumns
@@ -20,26 +20,40 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     command = "silent! EslintFixAll",
 })
 
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+    pattern = { "*.tf", "*.tfvars" },
+    callback = function()
+        vim.lsp.buf.formatting_sync()
+    end,
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
+        vim.keymap.set("n", "<leader>cd", vim.lsp.buf.type_definition, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>cr", vim.lsp.buf.references, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+        vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, { noremap = true, silent = true })
+        vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
+        vim.keymap.set("n", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
+        vim.keymap.set("i", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>p", function()
+            vim.lsp.buf.format { async = true }
+        end, { noremap = true, silent = true })
+    end,
+})
+
 vim.keymap.set("n", "[c", vim.diagnostic.goto_next)
 vim.keymap.set("n", "]c", vim.diagnostic.goto_prev)
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-vim.keymap.set("n", "<leader>cd", vim.lsp.buf.type_definition, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>cr", vim.lsp.buf.references, { noremap = true, silent = true })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
-vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, { noremap = true, silent = true })
-vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>p", vim.lsp.buf.format, { noremap = true, silent = true })
-vim.keymap.set("n", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
-vim.keymap.set("i", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
--- vim
--- nnoremap " gd    ","      vim.lsp.buf.definition()', { silent: true })
--- nnoremap " <c-k> ","      vim.lsp.buf.signature_help()', { silent: true })
 
 require("neodev").setup({
     library = {
-        enabled = true, -- when not enabled, neodev will not change any settings to the LSP server
+        enabled = true,
         -- these settings will be used for your Neovim config directory
         runtime = true, -- runtime path
         types = true,   -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
@@ -53,48 +67,44 @@ require("neodev").setup({
     -- for any other directory, config.library.enabled will be set to false
     override = function(root_dir, options)
     end,
-    -- With lspconfig, Neodev will automatically setup your lua-language-server
-    -- If you disable this, then you have to set {before_init=require("neodev.lsp").before_init}
-    -- in your lsp start options
     lspconfig = true,
-    -- much faster, but needs a recent built of lua-language-server
-    -- needs lua-language-server >= 3.6.0
     pathStrict = true,
 })
 
 local nvim_lsp = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
 
 local on_attach = function(client)
-    -- if vim.lsp.inlay_hint then
-    --     vim.lsp.inlay_hint(0, nil)
-    -- end
+    if vim.lsp.inlay_hint then
+        vim.lsp.inlay_hint(0, true)
+    end
 
--- TODO: Fix signature_help box of switch to keybinding
---    vim.api.nvim_exec2([[
---        augroup lsp
---            autocmd!
---            autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
---        augroup END
---    ]], { output = false })
+    -- TODO: Fix signature_help box of switch to keybinding
+       vim.api.nvim_exec2([[
+           augroup lsp
+               autocmd!
+               autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
+           augroup END
+       ]], { output = false })
 end
 
 nvim_lsp.tsserver.setup {
     on_attach = on_attach,
     capabilities = capabilities,
+    cmd = { 'typescript-language-server', '--stdio' },
     init_options = {
-        maxTsServerMemory = 3072,
-        preferences = {
-            includeInlayParameterNameHints = "all",
-            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-        }
+        -- preferences = {
+        --     includeInlayParameterNameHints = "all",
+        --     includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        --     includeInlayFunctionParameterTypeHints = true,
+        --     includeInlayVariableTypeHints = false,
+        --     includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+        --     includeInlayPropertyDeclarationTypeHints = true,
+        --     includeInlayFunctionLikeReturnTypeHints = true,
+        --     includeInlayEnumMemberValueHints = true,
+        -- }
     }
 }
 nvim_lsp.rust_analyzer.setup {
@@ -109,11 +119,13 @@ nvim_lsp.rust_analyzer.setup {
     }
 }
 nvim_lsp.bashls.setup {}
--- nvim_lsp.graphql.setup{}
-nvim_lsp.stylelint_lsp.setup {}
 nvim_lsp.html.setup { capabilities = capabilities, }
 nvim_lsp.jsonls.setup { capabilities = capabilities, }
 nvim_lsp.cssls.setup { capabilities = capabilities, }
+nvim_lsp.pyright.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
 nvim_lsp.pylsp.setup {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -139,34 +151,25 @@ nvim_lsp.clangd.setup {
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
-nvim_lsp.eslint.setup {}
+nvim_lsp.eslint.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    cmd = {  'vscode-eslint-language-server', '--stdio' },
+}
 nvim_lsp.prismals.setup {}
 
 nvim_lsp.lua_ls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
     settings = {
         Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = 'LuaJIT',
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { 'vim' },
-            },
-            workspace = {
-                checkThirdParty = false,
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
+            telemetry = { enable = false },
+            hint = { enable = true }
         },
     },
 }
 
-nvim_lsp.csharp_ls.setup{
+nvim_lsp.csharp_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
@@ -214,13 +217,13 @@ nvim_lsp.csharp_ls.setup{
             SpaceBeforeComma = false,
             SpaceBeforeDot = false,
             SpaceBeforeSemicolonsInForStatement = false,
-            SpacingAroundBinaryOperator = single,
+            SpacingAroundBinaryOperator = 'single',
             IndentBraces = false,
             IndentBlock = true,
             IndentSwitchSection = true,
             IndentSwitchCaseSection = true,
             IndentSwitchCaseSectionWhenBlock = true,
-            LabelPositioning = oneLess,
+            LabelPositioning = 'oneLess',
             WrappingPreserveSingleLine = true,
             WrappingKeepStatementsOnSingleLine = true,
             NewLinesForBracesInTypes = true,
@@ -244,23 +247,10 @@ nvim_lsp.csharp_ls.setup{
 
 require "fidget".setup {}
 
--- lua autocmd e.g.
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-    pattern = { "*.tf", "*.tfvars" },
-    callback = function()
-        vim.lsp.buf.formatting_sync()
-    end,
-})
-
 local lspkind = require('lspkind')
 local cmp = require 'cmp'
 
 cmp.setup({
-    snippet = {
-        expand = function(args)
-            vim.fn["UltiSnips#Anon"](args.body)
-        end,
-    },
     mapping = {
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -272,14 +262,29 @@ cmp.setup({
     sources = {
         { name = 'nvim_lsp' },
         { name = 'buffer' },
-        { name = 'ultisnips' },
         { name = 'path' },
         { name = 'nvim_lua' }
     },
     formatting = {
-        format = function(entry, vim_item)
-            vim_item.kind = lspkind.presets.default[vim_item.kind]
-            return vim_item
-        end
+        format = lspkind.cmp_format({
+            with_text = true,
+            menu = {
+                otter = "[🦦]",
+                copilot = '[]',
+                luasnip = "[snip]",
+                nvim_lsp = "[LSP]",
+                buffer = "[buf]",
+                path = "[path]",
+                spell = "[spell]",
+                pandoc_references = "[ref]",
+                tags = "[tag]",
+                treesitter = "[TS]",
+                calc = "[calc]",
+                latex_symbols = "[tex]",
+                emoji = "[emoji]",
+            },
+            mode = 'symbol', -- show only symbol annotations
+            ellipsis_char = '...',
+        })
     }
 })
