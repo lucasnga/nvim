@@ -1,16 +1,6 @@
-" Skip initialization for vim-tiny or vim-small.
-if !1 | finish | endif
-
-if &compatible
-    set nocompatible
-endif
-
-" Declare the general config group for autocommand
-augroup vimrc
-  autocmd!
-augroup END
-
-let g:loaded_matchit = 1
+lua << EOF
+vim_cmd_group = vim.api.nvim_create_augroup('vimrc', { clear = true })
+EOF
 
 " +----------------+
 " | install plugin |
@@ -36,7 +26,6 @@ Plug 'chaoren/vim-wordmotion' " camel case motion
 Plug 'andymass/vim-matchup' " Match more stuff with % (html tag, LaTeX...)
 Plug 'amiorin/vim-project' " vim project for one specific vimrc / project + startify for startup cow
 Plug 'mhinz/vim-startify'
-"Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular' " Align plugin
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' } " Distraction-free
 Plug 'junegunn/limelight.vim', { 'for': 'markdown' } " Hyperfocus-writing
@@ -48,6 +37,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 Plug 'chr4/nginx.vim' " nginx syntax colors
 Plug 'Darazaki/indent-o-matic'
+Plug 'mtdl9/vim-log-highlighting'
 
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php'}
 Plug 'nishigori/vim-php-dictionary', { 'for': 'php'}
@@ -70,6 +60,7 @@ Plug 'sebdah/vim-delve', { 'for': 'go'} " debugger
 Plug 'majutsushi/tagbar' " outliner
 Plug 'liuchengxu/vista.vim'
 Plug 'nvim-tree/nvim-tree.lua'
+Plug 'antosha417/nvim-lsp-file-operations'
 Plug 'itchyny/lightline.vim' " status bar
 Plug 'simnalamburt/vim-mundo' " undo tree
 Plug 'bfredl/nvim-miniyank' " registers
@@ -90,58 +81,46 @@ Plug 'lambdalisue/suda.vim' " Write file with sudo
 Plug 'junegunn/vim-peekaboo' " Display register values on \" and @
 Plug 'phux/vim-hardtime'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets'
+
 Plug 'fsharp/vim-fsharp', { 'for': 'fsharp', 'do': 'make fsautocomplete'}
-
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'simrat39/rust-tools.nvim', { 'for': 'rust' }
+Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
+Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
+Plug 'folke/neodev.nvim', { 'for': 'lua' }
+Plug 'yorinasub17/vim-terragrunt'
 
-Plug 'mfussenegger/nvim-dap'
-
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
+Plug 'sainnhe/sonokai'
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'onsails/lspkind-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-
-Plug 'sainnhe/sonokai'
-
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
-"Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
-Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
-Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
-Plug 'yorinasub17/vim-terragrunt'
 " dba tools
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion'
-
-Plug 'folke/neodev.nvim', { 'for': 'lua' }
-" vim profiler
-" Plug 'stevearc/profile.nvim'
+" Plug 'stevearc/profile.nvim'  " vim profiler
+Plug 'mfussenegger/nvim-dap'
+Plug 'jamestthompson3/sort-import.nvim'
 call plug#end()
 
 " +---------------+
 " | plugin config |
 " +---------------+
-
-" let g:AutoPairsFlyMode = 1
-
-" source every plugin configs
-for file in split(glob("~/nvim/pluggedconf/*.nvimrc"), '\n')
-    exe 'source' file
-endfor
-
 lua << EOF
-for k, v in ipairs(vim.fn.glob("~/.config/nvim/pluggedconf/**/*.lua", false, true)) do
-    dofile(v)
-end
+require('pluggedconf')
 EOF
 
 if exists("g:did_load_filetypes")
@@ -303,9 +282,6 @@ cnoremap w!! execute ':w suda://%'
 " +----------------+
 " | general config |
 " +----------------+
-
-" if has('termguicolors')
-" endif
 
 let g:sonokai_style = 'shusia'
 let g:sonokai_better_performance = 1
