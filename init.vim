@@ -147,6 +147,7 @@ autocmd vimrc BufNewFile,BufRead *.twig set filetype=html.twig
 autocmd vimrc BufNewFile,BufRead *.mod set filetype=gomod
 
 let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_math = 1
 
 " +-----------------+
 " | general binding |
