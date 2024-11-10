@@ -1,6 +1,5 @@
 require('pluggedconf/clojure/cljfmt')
 require('pluggedconf/clojure/fireplace')
-require('pluggedconf/clojure/nvim-lsp-file-operations')
 require('pluggedconf/csv/csv')
 require('pluggedconf/ferret')
 require('pluggedconf/fzf')

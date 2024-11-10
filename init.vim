@@ -7,6 +7,7 @@ EOF
 " +----------------+
 
 call plug#begin('~/nvim/plugged')
+Plug 'nvim-lua/plenary.nvim'
 Plug 'henrik/vim-indexed-search' " display the result when searching
 Plug 'tmux-plugins/vim-tmux' | Plug 'tmux-plugins/vim-tmux-focus-events' " syntax highlighting for tmux.conf + other cool options
 Plug 'christoomey/vim-tmux-navigator' " seemless navigation between vim windows / tmux pane
@@ -114,6 +115,9 @@ Plug 'kristijanhusak/vim-dadbod-completion'
 " Plug 'stevearc/profile.nvim'  " vim profiler
 Plug 'mfussenegger/nvim-dap'
 Plug 'jamestthompson3/sort-import.nvim'
+
+" quakeC
+Plug 'drzel/quakec.vim'
 call plug#end()
 
 " +---------------+

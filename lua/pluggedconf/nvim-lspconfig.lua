@@ -36,6 +36,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>cd", vim.lsp.buf.type_definition, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>ci", vim.lsp.buf.implementation, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>cr", vim.lsp.buf.references, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>cx", vim.lsp.buf.definition, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
         vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, { noremap = true, silent = true })
@@ -48,8 +49,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-vim.keymap.set("n", "[c", vim.diagnostic.goto_next)
-vim.keymap.set("n", "]c", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "[c", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end)
+vim.keymap.set("n", "]c", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end)
 
 require("neodev").setup({
     library = {
@@ -72,31 +77,47 @@ require("neodev").setup({
 })
 
 local nvim_lsp = require 'lspconfig'
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+require("lsp-file-operations").setup()
 
-local on_attach = function(client)
-    if vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(true)
-    end
+nvim_lsp.util.default_config = vim.tbl_extend(
+    'force',
+    nvim_lsp.util.default_config,
+    {
+        capabilities = vim.tbl_deep_extend(
+            "force",
+            vim.lsp.protocol.make_client_capabilities(),
+            require 'lsp-file-operations'.default_capabilities(),
+            require 'cmp_nvim_lsp'.default_capabilities()
 
-    if client.name == "tsserver" then
-        client.server_capabilities.documentFormattingProvider = false
-    end
+        ),
+        on_attach = function(client, bufnr)
+            if vim.lsp.inlay_hint then
+                vim.lsp.inlay_hint.enable(true)
+            end
 
-    -- TODO: Fix signature_help box of switch to keybinding
-    --    vim.api.nvim_exec2([[
-    --           augroup lsp
-    --               autocmd!
-    --               autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
-    --           augroup END
-    --       ]], { output = false })
-end
+            if client.name == "ts_ls" then
+                client.server_capabilities.documentFormattingProvider = false
+            end
 
-nvim_lsp.tsserver.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+            if client.name == "eslint" then
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    buffer = bufnr,
+                    command = "EslintFixAll",
+                })
+            end
+
+            -- TODO: Fix signature_help box of switch to keybinding
+            --    vim.api.nvim_exec2([[
+            --           augroup lsp
+            --               autocmd!
+            --               autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
+            --           augroup END
+            --       ]], { output = false })
+        end
+    }
+)
+nvim_lsp.ts_ls.setup {
     init_options = {
         preferences = {
             importModuleSpecifierPreference = "non-relative",
@@ -112,8 +133,6 @@ nvim_lsp.tsserver.setup {
     }
 }
 nvim_lsp.rust_analyzer.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -139,16 +158,11 @@ nvim_lsp.rust_analyzer.setup {
     }
 }
 nvim_lsp.bashls.setup {}
-nvim_lsp.html.setup { capabilities = capabilities, }
-nvim_lsp.jsonls.setup { capabilities = capabilities, }
-nvim_lsp.cssls.setup { capabilities = capabilities, }
-nvim_lsp.pyright.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
+nvim_lsp.html.setup {}
+nvim_lsp.jsonls.setup {}
+nvim_lsp.cssls.setup {}
+nvim_lsp.pyright.setup {}
 nvim_lsp.pylsp.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
     settings = {
         pylsp = {
             plugins = {
@@ -157,7 +171,10 @@ nvim_lsp.pylsp.setup {
                     maxLineLength = 100
                 },
                 mccabe = { enabled = true },
-                flake8 = { enabled = true }
+                flake8 = {
+                    enabled = true,
+                    ignore = { 'E501' }
+                }
             }
         }
     }
@@ -165,21 +182,23 @@ nvim_lsp.pylsp.setup {
 nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
 nvim_lsp.clangd.setup {
-    on_attach = on_attach,
-    capabilities = capabilities
+    cmd = {
+        "clangd",
+        "-j", "8",
+        "--header-insertion=never",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--rename-file-limit=0",
+        "--background-index",
+        "--background-index-priority=normal",
+    },
 }
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
-nvim_lsp.eslint.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
+nvim_lsp.eslint.setup {}
 nvim_lsp.prismals.setup {}
-
 nvim_lsp.lua_ls.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         Lua = {
             telemetry = { enable = false },
@@ -187,10 +206,7 @@ nvim_lsp.lua_ls.setup {
         },
     },
 }
-
 nvim_lsp.csharp_ls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
     settings = {
         inlayHintsOptions = {
             enableForParameters = false,
@@ -283,7 +299,7 @@ local launch_oxc = function()
         capabilities = vim.lsp.protocol.make_client_capabilities(),
     }
 
-    config.on_init = function(client, results)
+    config.on_init = function(client)
         local buf_attach = function()
             vim.lsp.buf_attach_client(0, client.id)
         end
@@ -301,7 +317,7 @@ local launch_oxc = function()
         end
     end
 
-    config.on_exit = vim.schedule_wrap(function(code, signal, client_id)
+    config.on_exit = vim.schedule_wrap(function()
         -- vim.api.nvim_del_autocmd(autocmd)
     end)
 
