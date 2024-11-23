@@ -160,6 +160,7 @@ nvim_lsp.rust_analyzer.setup {
 nvim_lsp.bashls.setup {}
 nvim_lsp.html.setup {}
 nvim_lsp.jsonls.setup {}
+nvim_lsp.marksman.setup{}
 nvim_lsp.cssls.setup {}
 nvim_lsp.pyright.setup {}
 nvim_lsp.pylsp.setup {
