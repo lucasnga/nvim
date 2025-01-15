@@ -197,7 +197,7 @@ nvim_lsp.clangd.setup {
 nvim_lsp.dotls.setup {}
 nvim_lsp.terraformls.setup {}
 nvim_lsp.tflint.setup {}
-nvim_lsp.eslint.setup {}
+-- nvim_lsp.eslint.setup {}
 nvim_lsp.prismals.setup {}
 nvim_lsp.lua_ls.setup {
     settings = {
@@ -325,7 +325,7 @@ local launch_oxc = function()
     vim.lsp.start_client(config)
 end
 
-launch_oxc()
+-- launch_oxc()
 
 require "fidget".setup {}
 
