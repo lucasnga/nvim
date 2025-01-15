@@ -384,6 +384,8 @@ set wildmode=list:longest,full
 set number relativenumber " relative / hybrid line number switch
 set diffopt+=vertical " for vertical pane in git diff tool
 
+set modeline " add modeline even for root
+
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
