@@ -8,7 +8,6 @@ EOF
 
 call plug#begin('~/nvim/plugged')
 Plug 'nvim-lua/plenary.nvim'
-Plug 'henrik/vim-indexed-search' " display the result when searching
 Plug 'tmux-plugins/vim-tmux' | Plug 'tmux-plugins/vim-tmux-focus-events' " syntax highlighting for tmux.conf + other cool options
 Plug 'christoomey/vim-tmux-navigator' " seemless navigation between vim windows / tmux pane
 Plug 'tpope/vim-obsession'
@@ -18,9 +17,7 @@ Plug 'junegunn/gv.vim' " Display commits for project / file
 Plug 'tpope/vim-surround' " surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
 Plug 'tpope/vim-abolish' " easily search, substitute and abbreviate multiple version of words
 Plug 'tpope/vim-repeat' " the . command can repeat whatever you want!
-Plug 'tpope/vim-commentary' " keystroke to comment automatically depending on the file you're in
 Plug 'tpope/vim-speeddating'
-Plug 'machakann/vim-highlightedyank' " Highlight briefly every yank text
 Plug 'machakann/vim-swap' " swap arguments in parenthesis
 Plug 'wellle/targets.vim' " add new text object (can delete between comma with di, for example)
 Plug 'chaoren/vim-wordmotion' " camel case motion
@@ -28,6 +25,7 @@ Plug 'andymass/vim-matchup' " Match more stuff with % (html tag, LaTeX...)
 Plug 'amiorin/vim-project' " vim project for one specific vimrc / project + startify for startup cow
 Plug 'mhinz/vim-startify'
 Plug 'godlygeek/tabular' " Align plugin
+
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' } " Distraction-free
 Plug 'junegunn/limelight.vim', { 'for': 'markdown' } " Hyperfocus-writing
 Plug 'rhysd/vim-grammarous', { 'for': 'markdown' } " show grammar mistakes
@@ -45,19 +43,19 @@ Plug 'nishigori/vim-php-dictionary', { 'for': 'php'}
 Plug 'adoy/vim-php-refactoring-toolbox', { 'for': 'php'}
 Plug 'phpactor/phpactor', { 'for': 'php', 'do': 'composer install'}
 
-" TODO: Do wypierdolenia/konwersji do LSP
-Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvimtools/none-ls.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'ray-x/go.nvim'
+Plug 'nvimtools/none-ls-extras.nvim'
+Plug 'ray-x/go.nvim', { 'for': 'go' }
 Plug 'ray-x/guihua.lua'
 Plug 'sebdah/vim-delve', { 'for': 'go'} " debugger
 " BUG: Posible performance issues
 " "Plug 'mlaursen/vim-react-snippets'
 " Plug 'posva/vim-vue' " For Vue
+
 Plug 'majutsushi/tagbar' " outliner
 Plug 'liuchengxu/vista.vim'
 Plug 'nvim-tree/nvim-tree.lua'
@@ -67,7 +65,7 @@ Plug 'simnalamburt/vim-mundo' " undo tree
 Plug 'bfredl/nvim-miniyank' " registers
 Plug 'moll/vim-bbye' " close the current buffer
 Plug 'wgwoods/vim-systemd-syntax' " systemd syntax and error
-Plug 'mattn/emmet-vim' " emmet for html
+Plug 'mattn/emmet-vim', { 'for': 'html' } " emmet for html
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } } " fzf - poweful fuzzy finder
 Plug 'junegunn/fzf.vim'
 Plug 'wincent/ferret' " allow multisearch in current directory / multi replace as well
@@ -89,11 +87,10 @@ Plug 'rafamadriz/friendly-snippets'
 Plug 'fsharp/vim-fsharp', { 'for': 'fsharp', 'do': 'make fsautocomplete'}
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'simrat39/rust-tools.nvim', { 'for': 'rust' }
-Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 Plug 'folke/neodev.nvim', { 'for': 'lua' }
-Plug 'yorinasub17/vim-terragrunt'
+Plug 'yorinasub17/vim-terragrunt', { 'for': 'terraform' }
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 Plug 'sainnhe/sonokai'
@@ -103,6 +100,9 @@ Plug 'onsails/lspkind-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+Plug 'ckolkey/ts-node-action'
+Plug 'ThePrimeagen/refactoring.nvim'
+
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-path'
@@ -112,12 +112,16 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion'
-" Plug 'stevearc/profile.nvim'  " vim profiler
-Plug 'mfussenegger/nvim-dap'
+Plug 'stevearc/profile.nvim'  " vim profiler
 Plug 'jamestthompson3/sort-import.nvim'
 
-" quakeC
-Plug 'drzel/quakec.vim'
+Plug 'drzel/quakec.vim' " quakeC
+" debuggerers
+"Plug 'vim-vdebug/vdebug'
+Plug 'mfussenegger/nvim-dap'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+
 call plug#end()
 
 " +---------------+
@@ -125,7 +129,14 @@ call plug#end()
 " +---------------+
 lua << EOF
 require('pluggedconf')
+require("nvim-autopairs").setup {}
+require('refactoring').setup()
 EOF
+
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=700})
+augroup END
 
 if exists("g:did_load_filetypes")
   filetype off
