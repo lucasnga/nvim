@@ -1,13 +1,12 @@
-lua << EOF
-vim_cmd_group = vim.api.nvim_create_augroup('vimrc', { clear = true })
+vim.api.nvim_create_augroup('vimrc', { clear = true })
 
 -- +---------------+
 -- | plugin config |
 -- +---------------+
 require('config.lazy')
 require('pluggedconf')
-require("nvim-autopairs").setup {}
-require('refactoring').setup()
+require("nvim-autopairs").setup({})
+require('refactoring').setup({})
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("highlight_yank", {}),
@@ -121,7 +120,7 @@ vim.api.nvim_create_autocmd("CursorHold", { pattern = "*", command = "update" })
 vim.keymap.set("i","<C-d>", "<Del>", { noremap = true })
 
 -- highlight the line which is longer than the defined margin (120 character)
-vim.api.nvim_set_hl(0, "MaxLineChar", { ctermbg = red })
+vim.api.nvim_set_hl(0, "MaxLineChar", { ctermbg = "red" })
 
 -- TODO: not working
 vim.api.nvim_create_autocmd("FileType", {
@@ -216,13 +215,14 @@ else
 	vim.opt.termguicolors = true
 end
 
--- TODO: Some fix/test needed (all colors in "")
-vim.api.nvim_set_hl(0, "EndOfBuffer", { bg=NONE, ctermbg=NONE })
-vim.api.nvim_set_hl(0, "Normal", { bg=NONE, ctermbg=238 })
-vim.api.nvim_set_hl(0, "SignColumn", { ctermbg=NONE, bg=NONE })
-vim.api.nvim_set_hl(0, "LineNr" , { ctermbg=NONE, bg=NONE })
-vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg=238 })
-vim.api.nvim_set_hl(0, "spInlayHint", { fg="#d8d8d8", bg="#4a4a3a" })
+vim.api.nvim_set_hl(0, "EndOfBuffer", { bg="NONE", ctermbg="NONE" })
+vim.api.nvim_set_hl(0, "Normal", { bg="NONE", ctermbg=238 })
+vim.api.nvim_set_hl(0, "SignColumn", { ctermbg="NONE", bg="NONE" })
+-- TODO: bad color
+-- vim.api.nvim_set_hl(0, "LineNr" , { ctermbg=238, bg=238 })
+-- TODO: bg not ctermbg
+-- vim.api.nvim_set_hl(0, "ColorColumn", { bg=238, ctermbg=238 })
+-- vim.api.nvim_set_hl(0, "spInlayHint", { fg="#d8d8d8", bg="#4a4a3a" })
 -- vim.api.nvim_set_hl(0, "VirtualTextError", { fg=darkred bg=lightgrey })
 
 vim.opt.signcolumn = "yes"
@@ -234,7 +234,6 @@ vim.g.loaded_ruby_provider = 0
 
 -- set the directory where the swap file will be saved
 vim.opt.backupdir= vim.env.HOME .. '/nvim/backup/'
-
 vim.opt.directory= vim.env.HOME .. '/nvim/swap/'
 
 -- save undo trees in files
@@ -319,15 +318,14 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o"
 })
 
-EOF
 
-"xxxxx
-"highlight EndOfBuffer guibg=NONE ctermbg=NONE
-"highlight Normal guibg=None ctermbg=238
-"highlight SignColumn ctermbg=NONE guibg=NONE
-"highlight LineNr     ctermbg=NONE guibg=NONE
-"highlight ColorColumn ctermbg=238
-"" " hi VirtualTextError guifg=darkred guibg=lightgrey
-"hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
-"
-"xxxxx
+-- xxxxx
+-- highlight EndOfBuffer guibg=NONE ctermbg=NONE
+-- highlight Normal guibg=None ctermbg=238
+-- highlight SignColumn ctermbg=NONE guibg=NONE
+-- highlight LineNr     ctermbg=NONE guibg=NONE
+-- highlight ColorColumn ctermbg=238
+-- " " hi VirtualTextError guifg=darkred guibg=lightgrey
+-- hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
+-- 
+-- xxxxx

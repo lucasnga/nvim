@@ -49,13 +49,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-vim.keymap.set("n", "[c", function()
-    vim.diagnostic.jump({ count = 1, float = true })
-end)
-vim.keymap.set("n", "]c", function()
-    vim.diagnostic.jump({ count = 1, float = true })
-end)
-
 require("neodev").setup({
     library = {
         enabled = true,
@@ -391,6 +384,7 @@ cmp.setup({
     },
     formatting = {
         fields = { "kind", "abbr", "menu" },
+        expandable_indicator = true,
         format = require('lspkind')
             .cmp_format({
                 with_text = true,
@@ -415,3 +409,7 @@ cmp.setup({
     },
     experimental = { ghost_text = { hl_group = 'CommentHighlightGroup' } },
 })
+
+vim.keymap.set("n", "[c", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]c", vim.diagnostic.goto_next)
+

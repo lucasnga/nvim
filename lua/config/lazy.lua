@@ -26,9 +26,11 @@ require("lazy").setup({
     spec = {
         'nvim-lua/plenary.nvim',
         'tmux-plugins/vim-tmux',                       -- syntax highlighting for tmux.conf + other cool options
+        'tmux-plugins/vim-tmux-focus-events',
         'christoomey/vim-tmux-navigator',              -- seemless navigation between vim windows / tmux pane
         'tpope/vim-obsession',
         'tpope/vim-fugitive',                          -- wrapper for git and display git diff in the left gutter
+        'mhinz/vim-signify',
         'tpope/vim-rhubarb',                           -- fugitive for the hub
         'junegunn/gv.vim',                             -- Display commits for project / file
         'tpope/vim-surround',                          -- surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
@@ -71,7 +73,6 @@ require("lazy").setup({
         -- BUG: Posible performance issues
         -- "'mlaursen/vim-react-snippets'
         -- 'posva/vim-vue' " For Vue
-
         'majutsushi/tagbar', -- outliner
         'liuchengxu/vista.vim',
         'nvim-tree/nvim-tree.lua',
@@ -82,11 +83,7 @@ require("lazy").setup({
         'moll/vim-bbye',                    -- close the current buffer
         'wgwoods/vim-systemd-syntax',       -- systemd syntax and error
         { 'mattn/emmet-vim', ft = 'html' }, -- emmet for html
-
-
         { 'junegunn/fzf',    dir = '~/.fzf', build = function() vim.fn['fzf#install()']() end }, -- fzf - poweful fuzzy finder
-
-
         'junegunn/fzf.vim',
         'wincent/ferret',                   -- allow multisearch in current directory / multi replace as well
         'ap/vim-css-color',                 -- display the hexadecimal colors - useful for css and color config
@@ -111,7 +108,7 @@ require("lazy").setup({
         { 'folke/neodev.nvim',          ft = 'lua' },
         { 'yorinasub17/vim-terragrunt', ft = 'terraform' },
         { 'j-hui/fidget.nvim',          tag = 'legacy' },
-        'sainnhe/sonokai',
+        { 'sainnhe/sonokai',            lazy = false },
         'ryanoasis/vim-devicons',
         'nvim-tree/nvim-web-devicons',
         'onsails/lspkind-nvim',
@@ -134,6 +131,7 @@ require("lazy").setup({
         'jamestthompson3/sort-import.nvim',
 
         'drzel/quakec.vim', -- quakeC
+
         -- debuggerers
         'vim-vdebug/vdebug',
         'mfussenegger/nvim-dap',
@@ -148,4 +146,3 @@ require("lazy").setup({
     -- automatically check for plugin updates
     checker = { enabled = false },
 })
-
