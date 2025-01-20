@@ -31,12 +31,12 @@ vim.cmd("source ~/nvim/projects.nvimrc")
 -- close the buffer
 vim.keymap.set('n', '<leader>db', ':Bdelete<cr>', { noremap = true })
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead"}, {
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
     pattern = { "*.twig" },
     command = "set filetype=html.twig",
 })
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead"}, {
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
     pattern = { "*.mod" },
     command = "set filetype=gomod",
 })
@@ -59,8 +59,8 @@ vim.keymap.set("v", "<F2>", "!boxes -d stone")
 vim.keymap.set("n", "<esc>", ":noh<cr>", { silent = true })
 
 -- surround by quotes - frequently use cases of vim-surround
-vim.keymap.set({"n", "v", "x"}, '<leader>\"', 'ysiw"', { remap = true })
-vim.keymap.set({"n", "v", "x"}, "<leader>\'", "ysiw'", { remap = true })
+vim.keymap.set({ "n", "v", "x" }, '<leader>\"', 'ysiw"', { remap = true })
+vim.keymap.set({ "n", "v", "x" }, "<leader>\'", "ysiw'", { remap = true })
 
 -- indent without kill the selection in vmode
 vim.keymap.set("v", "<", "<gv")
@@ -89,35 +89,35 @@ vim.keymap.set("n", "<leader>q", ':call general#ToggleList("Quickfix List", "c")
 -- Toggle between absolute -> relative line number
 vim.keymap.set("n", "<C-n>", ":let [&nu, &rnu] = [&nu, &nu+&rnu==1]<CR>", { noremap = true })
 
-vim.keymap.set("n","<leader>t", ":terminal<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>t", ":terminal<CR>", { noremap = true })
 
 -- tabs
-vim.keymap.set("n","th", ":tabfirst<CR>", { noremap = true })
-vim.keymap.set("n","tk", ":tabnext<CR>", { noremap = true })
-vim.keymap.set("n","tj", ":tabprev<CR>", { noremap = true })
-vim.keymap.set("n","tl", ":tablast<CR>", { noremap = true })
-vim.keymap.set("n","tn", ":tabnew<CR>", { noremap = true })
+vim.keymap.set("n", "th", ":tabfirst<CR>", { noremap = true })
+vim.keymap.set("n", "tk", ":tabnext<CR>", { noremap = true })
+vim.keymap.set("n", "tj", ":tabprev<CR>", { noremap = true })
+vim.keymap.set("n", "tl", ":tablast<CR>", { noremap = true })
+vim.keymap.set("n", "tn", ":tabnew<CR>", { noremap = true })
 
 -- move tab to first/last position
-vim.keymap.set("n","tF", ":tabm 0<CR>", { noremap = true })
-vim.keymap.set("n","tL", ":tabm<CR>", { noremap = true })
+vim.keymap.set("n", "tF", ":tabm 0<CR>", { noremap = true })
+vim.keymap.set("n", "tL", ":tabm<CR>", { noremap = true })
 
 -- windows navigation
 -- use ctrl + hjkl
 
 -- close all windows except the current one
-vim.keymap.set("n","<leader>wco", ":only<cr>", { noremap = true })
-vim.keymap.set("n","<leader>wcc", ":cclose<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>wco", ":only<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>wcc", ":cclose<cr>", { noremap = true })
 
 -- windows creation
 -- create horizontal window
-vim.keymap.set("n","<leader>wh", "<c-w>s", { noremap = true })
+vim.keymap.set("n", "<leader>wh", "<c-w>s", { noremap = true })
 -- create vertival window
-vim.keymap.set("n","<leader>wv", "<c-w>v", { noremap = true })
+vim.keymap.set("n", "<leader>wv", "<c-w>v", { noremap = true })
 
 vim.api.nvim_create_autocmd("CursorHold", { pattern = "*", command = "update" })
 
-vim.keymap.set("i","<C-d>", "<Del>", { noremap = true })
+vim.keymap.set("i", "<C-d>", "<Del>", { noremap = true })
 
 -- highlight the line which is longer than the defined margin (120 character)
 vim.api.nvim_set_hl(0, "MaxLineChar", { ctermbg = "red" })
@@ -135,7 +135,9 @@ vim.api.nvim_create_autocmd("FileType", {
     group = "vimrc",
     pattern = { "python", "javascript", "typescript", "typescriptreact", "css", "go", "html", "php" },
     callback = function()
-        vim.keymap.set("n","<leader>D", ":lua os.execute('xdg-open https://devdocs.io/#q=' .. vim.fn.fnameescape(vim.fn.expand('<cword>')))<cr>", { silent = true , buffer = true })
+        vim.keymap.set("n", "<leader>D",
+            ":lua os.execute('xdg-open https://devdocs.io/#q=' .. vim.fn.fnameescape(vim.fn.expand('<cword>')))<cr>",
+            { silent = true, buffer = true })
     end,
 })
 
@@ -172,7 +174,7 @@ vim.keymap.set("n", "<leader><f6>", ":so $MYVIMRC<CR>", { silent = true })
 
 vim.api.nvim_create_autocmd("BufWrite", {
     group = "vimrc",
-    pattern = { "*.py", "*.php","*.js","*.jsx","*.vue","*.twig","*.html","*.sh","*.yaml","*.yml" },
+    pattern = { "*.py", "*.php", "*.js", "*.jsx", "*.vue", "*.twig", "*.html", "*.sh", "*.yaml", "*.yml" },
     command = "call general#DeleteTrailingWS()"
 })
 
@@ -181,7 +183,7 @@ vim.keymap.set("n", "<Leader>z", ":call general#ZoomToggle()<CR>", { noremap = t
 
 vim.api.nvim_create_autocmd("BufEnter", {
     group = "vimrc",
-    pattern = { "*.png", "*.jpg" , "*.gif" },
+    pattern = { "*.png", "*.jpg", "*.gif" },
     command = "silent! !sxiv " .. vim.fn.expand("%") .. " | :bw"
 })
 
@@ -210,14 +212,14 @@ vim.g.sonokai_better_performance = 1
 vim.cmd.colorscheme("sonokai")
 
 if vim.env.TERM == "fbterm" then
-	vim.opt.termguicolors = false
+    vim.opt.termguicolors = false
 else
-	vim.opt.termguicolors = true
+    vim.opt.termguicolors = true
 end
 
-vim.api.nvim_set_hl(0, "EndOfBuffer", { bg="NONE", ctermbg="NONE" })
-vim.api.nvim_set_hl(0, "Normal", { bg="NONE", ctermbg=238 })
-vim.api.nvim_set_hl(0, "SignColumn", { ctermbg="NONE", bg="NONE" })
+vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE", ctermbg = "NONE" })
+vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = 238 })
+vim.api.nvim_set_hl(0, "SignColumn", { ctermbg = "NONE", bg = "NONE" })
 -- TODO: bad color
 -- vim.api.nvim_set_hl(0, "LineNr" , { ctermbg=238, bg=238 })
 -- TODO: bg not ctermbg
@@ -233,27 +235,27 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 -- set the directory where the swap file will be saved
-vim.opt.backupdir= vim.env.HOME .. '/nvim/backup/'
-vim.opt.directory= vim.env.HOME .. '/nvim/swap/'
+vim.opt.backupdir = vim.env.HOME .. '/nvim/backup/'
+vim.opt.directory = vim.env.HOME .. '/nvim/swap/'
 
 -- save undo trees in files
 vim.opt.undofile = true
 vim.opt.undodir = vim.env.HOME .. '/nvim/undo/'
 
-vim.opt.number = true -- set line number
+vim.opt.number = true                   -- set line number
 vim.opt.clipboard:append('unnamedplus') -- the copy goes to the clipboard
 
 -- copy indent from current line when starting a new line
-vim.opt.autoindent= true
+vim.opt.autoindent = true
 -- indentation is always done with spaces
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 -- use 4 spaces instead of tab (to replace existing tab use :retab)
-vim.opt.tabstop=4
+vim.opt.tabstop = 4
 -- cursor move by
-vim.opt.softtabstop=4
+vim.opt.softtabstop = 4
 -- 0 - same as tabstop
-vim.opt.shiftwidth=0
+vim.opt.shiftwidth = 0
 -- at the line start use shiftwidth
 vim.opt.smarttab = true
 
@@ -265,48 +267,51 @@ vim.keymap.set("n", "<Leader>sl", ":so ~/nvim/sessions/*.vim<C-D><BS><BS><BS><BS
 vim.opt.shiftround = true -- when at 3 spaces, and I hit > ... go to 4, not 7
 
 -- number of undo saved in memory
-vim.opt.undolevels=10000 -- How many undos
-vim.opt.undoreload=10000 -- number of lines to save for undo
+vim.opt.undolevels = 10000 -- How many undos
+vim.opt.undoreload = 10000 -- number of lines to save for undo
 
 -- Use case insensitive search, except when using capital letters
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- ERROR: TO FIX
-vim.opt.list = true 
--- ERROR: TOFIX
--- vim.opt.listchars = { tab: "\\┆\\", trail: '·', nbsp: '±' } -- set list
-vim.opt.hidden = true -- doesn't prompt a warning when opening a file and the current file was written but not saved 
+vim.opt.listchars:append {
+    tab = "| ",
+    trail = '·',
+    nbsp = '±'
+}
+
+vim.opt.list = true
+vim.opt.hidden = true    -- doesn't prompt a warning when opening a file and the current file was written but not saved
 vim.opt.showmode = false -- doesn't display the mode status
-vim.opt.scrolloff=999 -- Keep cursor more in middle when scrolling down / up
+vim.opt.scrolloff = 999  -- Keep cursor more in middle when scrolling down / up
 vim.opt.swapfile = false -- no swap file! This is just annoying
 vim.opt.autowrite = true -- write automatically when quitting buffer
 
 -- Fold related
-vim.opt.foldlevelstart=0 -- Start with all folds closed
+vim.opt.foldlevelstart = 0                   -- Start with all folds closed
 
-vim.opt.foldtext= "call general#FoldText()" -- Set foldtext
-vim.opt.inccommand = "nosplit" -- Show the substitution LIVE
+vim.opt.foldtext = "general#FoldText()" -- Set foldtext
+vim.opt.inccommand = "nosplit"               -- Show the substitution LIVE
 
 -- Better ex autocompletion
 vim.opt.wildmenu = true
-vim.opt.wildmode= 'list:longest,full'
+vim.opt.wildmode = 'list:longest,full'
 
 vim.opt.number = true
-vim.opt.relativenumber = false -- relative / hybrid line number switch
+vim.opt.relativenumber = false     -- relative / hybrid line number switch
 vim.opt.diffopt:append('vertical') -- for vertical pane in git diff tool
 
-vim.opt.modeline = true -- add modeline even for root
+vim.opt.modeline = true            -- add modeline even for root
 
 number_toggle = vim.api.nvim_create_augroup("numbertoggle", {})
 
-vim.api.nvim_create_autocmd({ "BufEnter","FocusGained","InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave" }, {
     group = number_toggle,
     pattern = "*",
     command = "set relativenumber"
 })
 
-vim.api.nvim_create_autocmd({ "BufLeave","FocusLost","InsertEnter" }, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter" }, {
     group = number_toggle,
     pattern = "*",
     command = "set norelativenumber"
@@ -327,5 +332,5 @@ vim.api.nvim_create_autocmd("FileType", {
 -- highlight ColorColumn ctermbg=238
 -- " " hi VirtualTextError guifg=darkred guibg=lightgrey
 -- hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
--- 
+--
 -- xxxxx
