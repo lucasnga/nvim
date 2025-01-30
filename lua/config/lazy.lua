@@ -97,7 +97,7 @@ require("lazy").setup({
         'junegunn/vim-peekaboo',            -- Display register values on \" and @
         'phux/vim-hardtime',
         'ludovicchabant/vim-gutentags',
-        { 'L3MON4D3/LuaSnip', tag = 'v2.*', build = "make install_jsregexp" },
+        { 'L3MON4D3/LuaSnip', version = 'v2.*', build = "make install_jsregexp" },
         'saadparwaiz1/cmp_luasnip',
         'rafamadriz/friendly-snippets',
         { 'fsharp/vim-fsharp',          ft = 'fsharp',   build = 'make fsautocomplete' },
@@ -107,7 +107,7 @@ require("lazy").setup({
         { 'hashivim/vim-terraform',     ft = 'terraform' },
         { 'folke/neodev.nvim',          ft = 'lua' },
         { 'yorinasub17/vim-terragrunt', ft = 'terraform' },
-        { 'j-hui/fidget.nvim',          tag = 'legacy' },
+        { 'j-hui/fidget.nvim',          tag = 'v1.5.0' },
         { 'sainnhe/sonokai',            lazy = false },
         'ryanoasis/vim-devicons',
         'nvim-tree/nvim-web-devicons',

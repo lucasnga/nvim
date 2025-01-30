@@ -150,7 +150,9 @@ nvim_lsp.rust_analyzer.setup {
         }
     }
 }
-nvim_lsp.bashls.setup {}
+nvim_lsp.bashls.setup {
+    cmd = { vim.env.HOME .. '/.local/bin/' .. 'bash-language-server', 'start' },
+}
 nvim_lsp.html.setup {}
 nvim_lsp.jsonls.setup {}
 nvim_lsp.marksman.setup{}
