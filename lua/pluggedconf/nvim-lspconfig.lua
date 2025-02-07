@@ -155,7 +155,7 @@ nvim_lsp.bashls.setup {
 }
 nvim_lsp.html.setup {}
 nvim_lsp.jsonls.setup {}
-nvim_lsp.marksman.setup{}
+nvim_lsp.marksman.setup {}
 nvim_lsp.cssls.setup {}
 nvim_lsp.pyright.setup {}
 nvim_lsp.pylsp.setup {
@@ -322,7 +322,13 @@ end
 
 -- launch_oxc()
 
-require "fidget".setup {}
+require "fidget".setup {
+        notification = {
+      window = {
+        winblend = 0,
+      },
+    },
+}
 
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -414,4 +420,3 @@ cmp.setup({
 
 vim.keymap.set("n", "[c", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]c", vim.diagnostic.goto_next)
-
