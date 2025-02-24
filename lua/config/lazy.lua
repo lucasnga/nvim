@@ -77,24 +77,24 @@ require("lazy").setup({
         'liuchengxu/vista.vim',
         'nvim-tree/nvim-tree.lua',
         'antosha417/nvim-lsp-file-operations',
-        'itchyny/lightline.vim',            -- status bar
-        'simnalamburt/vim-mundo',           -- undo tree
-        'bfredl/nvim-miniyank',             -- registers
-        'moll/vim-bbye',                    -- close the current buffer
-        'wgwoods/vim-systemd-syntax',       -- systemd syntax and error
-        { 'mattn/emmet-vim', ft = 'html' }, -- emmet for html
+        'itchyny/lightline.vim',                                                                 -- status bar
+        'simnalamburt/vim-mundo',                                                                -- undo tree
+        'bfredl/nvim-miniyank',                                                                  -- registers
+        'moll/vim-bbye',                                                                         -- close the current buffer
+        'wgwoods/vim-systemd-syntax',                                                            -- systemd syntax and error
+        { 'mattn/emmet-vim', ft = 'html' },                                                      -- emmet for html
         { 'junegunn/fzf',    dir = '~/.fzf', build = function() vim.fn['fzf#install()']() end }, -- fzf - poweful fuzzy finder
         'junegunn/fzf.vim',
-        'wincent/ferret',                   -- allow multisearch in current directory / multi replace as well
-        'ap/vim-css-color',                 -- display the hexadecimal colors - useful for css and color config
-        'simeji/winresizer',                -- easy way to rezise and exchange windows
-        'yangmillstheory/vim-snipe',        -- replace f F t T to target easily the motion
-        'AndrewRadev/splitjoin.vim',        -- Split arrays in PHP / struct in Go / other things
+        'wincent/ferret',                                                                        -- allow multisearch in current directory / multi replace as well
+        'ap/vim-css-color',                                                                      -- display the hexadecimal colors - useful for css and color config
+        'simeji/winresizer',                                                                     -- easy way to rezise and exchange windows
+        'yangmillstheory/vim-snipe',                                                             -- replace f F t T to target easily the motion
+        'AndrewRadev/splitjoin.vim',                                                             -- Split arrays in PHP / struct in Go / other things
         -- TODO: GO up and find replacements
-        { 'chrisbra/csv.vim', ft = 'csv' }, -- CSV plugin
-        'blueyed/vim-diminactive',          -- Plug to dim not-focused windows
-        'lambdalisue/suda.vim',             -- Write file with sudo
-        'junegunn/vim-peekaboo',            -- Display register values on \" and @
+        { 'chrisbra/csv.vim', ft = 'csv' },                                                      -- CSV plugin
+        'blueyed/vim-diminactive',                                                               -- Plug to dim not-focused windows
+        'lambdalisue/suda.vim',                                                                  -- Write file with sudo
+        'junegunn/vim-peekaboo',                                                                 -- Display register values on \" and @
         'phux/vim-hardtime',
         'ludovicchabant/vim-gutentags',
         { 'L3MON4D3/LuaSnip', version = 'v2.*', build = "make install_jsregexp" },
@@ -124,9 +124,24 @@ require("lazy").setup({
         'hrsh7th/cmp-buffer',
 
         -- dba tools
-        'tpope/vim-dadbod',
-        'kristijanhusak/vim-dadbod-ui',
-        'kristijanhusak/vim-dadbod-completion',
+        {
+            'kristijanhusak/vim-dadbod-ui',
+            dependencies = {
+                { 'tpope/vim-dadbod',                     lazy = true },
+                { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+            },
+            cmd = {
+                'DBUI',
+                'DBUIToggle',
+                'DBUIAddConnection',
+                'DBUIFindBuffer',
+            },
+            init = function()
+                -- Your DBUI configuration
+                vim.g.db_ui_use_nerd_fonts = 1
+            end,
+        },
+
         'stevearc/profile.nvim', -- vim profiler
         'jamestthompson3/sort-import.nvim',
 

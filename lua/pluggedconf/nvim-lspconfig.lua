@@ -323,10 +323,10 @@ end
 -- launch_oxc()
 
 require "fidget".setup {
-        notification = {
-      window = {
-        winblend = 0,
-      },
+    notification = {
+        window = {
+            winblend = 0,
+        },
     },
 }
 
@@ -416,6 +416,14 @@ cmp.setup({
             })
     },
     experimental = { ghost_text = { hl_group = 'CommentHighlightGroup' } },
+})
+
+
+cmp.setup.filetype({ "sql" }, {
+    sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" }
+    }
 })
 
 vim.keymap.set("n", "[c", vim.diagnostic.goto_prev)

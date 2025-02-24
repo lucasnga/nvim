@@ -208,7 +208,7 @@ vim.keymap.set("c", "w!!", 'execute :w suda://%', { noremap = true })
 -- +----------------+
 
 vim.g.sonokai_style = 'shusia'
-vim.g.sonokai_better_performance = 1
+-- vim.g.sonokai_better_performance = 1
 vim.cmd.colorscheme("sonokai")
 
 if vim.env.TERM == "fbterm" then
@@ -218,14 +218,16 @@ else
 end
 
 vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE", ctermbg = "NONE" })
-vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = 238 })
+vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
 vim.api.nvim_set_hl(0, "SignColumn", { ctermbg = "NONE", bg = "NONE" })
--- TODO: bad color
--- vim.api.nvim_set_hl(0, "LineNr" , { ctermbg=238, bg=238 })
--- TODO: bg not ctermbg
+vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "NONE" , ctermbg = "NONE" })
+vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { bg = "#4a4a3a" , ctermbg = "NONE" })
+vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = 'none', ctermbg = 'none', fg = '#4a4a4a' })
+
+-- vim.api.nvim_set_hl(0, "LineNr" , { bg="NONE", ctermbg="NONE" })
 -- vim.api.nvim_set_hl(0, "ColorColumn", { bg=238, ctermbg=238 })
 -- vim.api.nvim_set_hl(0, "spInlayHint", { fg="#d8d8d8", bg="#4a4a3a" })
--- vim.api.nvim_set_hl(0, "VirtualTextError", { fg=darkred bg=lightgrey })
+-- vim.api.nvim_set_hl(0, "VirtualTextError", { fg="#FF2020", bg="lightgrey" })
 
 vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "100"
