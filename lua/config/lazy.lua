@@ -112,7 +112,7 @@ require("lazy").setup({
         'ryanoasis/vim-devicons',
         'nvim-tree/nvim-web-devicons',
         'onsails/lspkind-nvim',
-        { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+        { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdateSync' },
         'nvim-treesitter/nvim-treesitter-textobjects',
         'JoosepAlviste/nvim-ts-context-commentstring',
         'ckolkey/ts-node-action',
