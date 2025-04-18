@@ -202,6 +202,7 @@ nvim_lsp.lua_ls.setup {
         },
     },
 }
+nvim_lsp.oxlint.setup {}
 nvim_lsp.csharp_ls.setup {
     settings = {
         inlayHintsOptions = {
