@@ -277,52 +277,6 @@ nvim_lsp.csharp_ls.setup {
     }
 }
 
-local launch_oxc = function()
-    local autocmd
-    local filetypes = {
-        'javascript',
-        'javascriptreact',
-        'javascript.jsx',
-        'typescript',
-        'typescriptreact',
-        'typescript.tsx',
-    }
-
-    local config = {
-        cmd = { 'oxc_language_server' },
-        name = 'oxc',
-        filetypes = filetypes,
-        root_dir = vim.fs.dirname(vim.fs.find({ '.git' }, { upward = true })[1]),
-        capabilities = vim.lsp.protocol.make_client_capabilities(),
-    }
-
-    config.on_init = function(client)
-        local buf_attach = function()
-            vim.lsp.buf_attach_client(0, client.id)
-        end
-
-        autocmd = vim.api.nvim_create_autocmd('FileType', {
-            desc = string.format('Attach LSP: %s', client.name),
-            pattern = filetypes,
-            callback = buf_attach
-        })
-
-        if vim.v.vim_did_enter == 1 and
-            vim.tbl_contains(filetypes, vim.bo.filetype)
-        then
-            buf_attach()
-        end
-    end
-
-    config.on_exit = vim.schedule_wrap(function()
-        -- vim.api.nvim_del_autocmd(autocmd)
-    end)
-
-    vim.lsp.start_client(config)
-end
-
--- launch_oxc()
-
 require "fidget".setup {
     notification = {
         window = {
