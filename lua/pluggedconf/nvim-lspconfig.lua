@@ -179,7 +179,7 @@ nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
 nvim_lsp.clangd.setup {
     cmd = {
-        "clangd",
+        "clangd-19",
         "-j", "8",
         "--header-insertion=never",
         "--completion-style=detailed",
