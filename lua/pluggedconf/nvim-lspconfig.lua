@@ -179,14 +179,15 @@ nvim_lsp.yamlls.setup {}
 nvim_lsp.dockerls.setup {}
 nvim_lsp.clangd.setup {
     cmd = {
-        "clangd-19",
+        "clangd-21",
         "-j", "8",
-        "--header-insertion=never",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
         "--completion-style=detailed",
         "--function-arg-placeholders",
         "--rename-file-limit=0",
         "--background-index",
-        "--background-index-priority=normal",
+        "--background-index-priority=low",
     },
 }
 nvim_lsp.dotls.setup {}
