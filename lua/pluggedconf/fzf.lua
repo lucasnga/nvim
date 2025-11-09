@@ -1,6 +1,13 @@
 fzf_cmd_group = vim.api.nvim_create_augroup('fzf', { clear = true })
 
 vim.g.fzf_tags_command = 'ctags --recurse --verbose --append --extra=+q --fields=+aimS --c-kinds=+p --c++-kinds=+p'
+vim.g.fzf_preview_window = { 'up,60%', 'ctrl-/' }
+vim.g.fzf_layout = {
+  window = {
+    height = 0.9,
+    width = 0.9
+  }
+}
 
 -- History of file opened
 vim.keymap.set('n', '<leader>h', ':History<cr>', { noremap = true })
