@@ -51,7 +51,7 @@ require("lazy").setup({
         'reedes/vim-wordy',                            -- Verify quality of writting (see :Wordy)
         'reedes/vim-lexical',                          -- Dictionnary, thesaurus...
         'ron89/thesaurus_query.vim',                   -- Thesaurus
-        { 'iamcco/markdown-preview.nvim', ft = 'markdown', build = function() vim.fn["mkdp#util#install"]() end },
+        { 'iamcco/markdown-preview.nvim', ft = 'markdown', build = 'mkdp#util#install' },
         { 'lukas-reineke/headlines.nvim', ft = 'markdown' },
         'chr4/nginx.vim', -- nginx syntax colors
         'Darazaki/indent-o-matic',
@@ -60,7 +60,7 @@ require("lazy").setup({
         { 'stephpy/vim-php-cs-fixer',         ft = 'php' },
         { 'nishigori/vim-php-dictionary',     ft = 'php' },
         { 'adoy/vim-php-refactoring-toolbox', ft = 'php' },
-        { 'phpactor/phpactor',                ft = 'php', build = function() vim.fn['composer install']() end },
+        { 'phpactor/phpactor',                ft = 'php', build = 'composer install' },
         'windwp/nvim-autopairs',
         'windwp/nvim-ts-autotag',
 
@@ -83,7 +83,7 @@ require("lazy").setup({
         'moll/vim-bbye',                                                                         -- close the current buffer
         'wgwoods/vim-systemd-syntax',                                                            -- systemd syntax and error
         { 'mattn/emmet-vim', ft = 'html' },                                                      -- emmet for html
-        { 'junegunn/fzf',    dir = '~/.fzf', build = function() vim.fn['fzf#install()']() end }, -- fzf - poweful fuzzy finder
+        { 'junegunn/fzf',    dir = '~/.fzf', build = 'fzf#install()' },                          -- fzf - poweful fuzzy finder
         'junegunn/fzf.vim',
         'wincent/ferret',                                                                        -- allow multisearch in current directory / multi replace as well
         'ap/vim-css-color',                                                                      -- display the hexadecimal colors - useful for css and color config
@@ -96,7 +96,6 @@ require("lazy").setup({
         'lambdalisue/suda.vim',                                                                  -- Write file with sudo
         'junegunn/vim-peekaboo',                                                                 -- Display register values on \" and @
         'phux/vim-hardtime',
-        'ludovicchabant/vim-gutentags',
         { 'L3MON4D3/LuaSnip', version = 'v2.*', build = "make install_jsregexp" },
         'saadparwaiz1/cmp_luasnip',
         'rafamadriz/friendly-snippets',
