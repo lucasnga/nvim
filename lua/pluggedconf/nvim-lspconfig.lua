@@ -63,7 +63,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>cr", vim.lsp.buf.references, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>cx", vim.lsp.buf.definition, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+        vim.keymap.set("n", "K", function()
+            vim.lsp.buf.hover { border = "single", max_height = 25, max_width = 100 }
+        end, { noremap = true, silent = true })
         vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, { noremap = true, silent = true })
         vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
         vim.keymap.set("n", '<C-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
