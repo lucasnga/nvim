@@ -29,8 +29,33 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-    callback = function(ev)
-        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    callback = function(args)
+        vim.lsp.inlay_hint.enable(true)
+
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+            if client.name == "ts_ls" then
+                client.server_capabilities.documentFormattingProvider = false
+            end
+
+            if client.name == "eslint" then
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    buffer = args.buf,
+                    command = "EslintFixAll",
+                })
+            end
+        end
+
+        -- TODO: Fix signature_help box of switch to keybinding
+        --    vim.api.nvim_exec2([[
+        --           augroup lsp
+        --               autocmd!
+        --               autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
+        --           augroup END
+        --       ]], { output = false })
+
+
+        vim.bo[args.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
         vim.keymap.set("n", "<leader>cd", vim.lsp.buf.type_definition, { noremap = true, silent = true })
@@ -67,50 +92,21 @@ require("neodev").setup({
     end,
     lspconfig = true,
     pathStrict = true,
+    debug = false,
 })
-
-local nvim_lsp = require 'lspconfig'
 
 require("lsp-file-operations").setup()
 
-nvim_lsp.util.default_config = vim.tbl_extend(
-    'force',
-    nvim_lsp.util.default_config,
-    {
-        capabilities = vim.tbl_deep_extend(
-            "force",
-            vim.lsp.protocol.make_client_capabilities(),
-            require 'lsp-file-operations'.default_capabilities(),
-            require 'cmp_nvim_lsp'.default_capabilities()
+vim.lsp.config('*', {
+    capabilities = vim.tbl_deep_extend(
+        "force",
+        vim.lsp.protocol.make_client_capabilities(),
+        require 'lsp-file-operations'.default_capabilities(),
+        require 'cmp_nvim_lsp'.default_capabilities()
 
-        ),
-        on_attach = function(client, bufnr)
-            if vim.lsp.inlay_hint then
-                vim.lsp.inlay_hint.enable(true)
-            end
-
-            if client.name == "ts_ls" then
-                client.server_capabilities.documentFormattingProvider = false
-            end
-
-            if client.name == "eslint" then
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    buffer = bufnr,
-                    command = "EslintFixAll",
-                })
-            end
-
-            -- TODO: Fix signature_help box of switch to keybinding
-            --    vim.api.nvim_exec2([[
-            --           augroup lsp
-            --               autocmd!
-            --               autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
-            --           augroup END
-            --       ]], { output = false })
-        end
-    }
-)
-nvim_lsp.ts_ls.setup {
+    ),
+})
+vim.lsp.config('ts_ls', {
     init_options = {
         preferences = {
             importModuleSpecifierPreference = "non-relative",
@@ -124,8 +120,9 @@ nvim_lsp.ts_ls.setup {
             -- includeInlayEnumMemberValueHints = true,
         }
     }
-}
-nvim_lsp.rust_analyzer.setup {
+})
+vim.lsp.enable('ts_ls')
+vim.lsp.config('rust_analyzer', {
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -149,16 +146,18 @@ nvim_lsp.rust_analyzer.setup {
             },
         }
     }
-}
-nvim_lsp.bashls.setup {
+})
+vim.lsp.enable('rust_analyzer')
+vim.lsp.config('bashls', {
     cmd = { vim.env.HOME .. '/.local/bin/' .. 'bash-language-server', 'start' },
-}
-nvim_lsp.html.setup {}
-nvim_lsp.jsonls.setup {}
-nvim_lsp.marksman.setup {}
-nvim_lsp.cssls.setup {}
-nvim_lsp.pyright.setup {}
-nvim_lsp.pylsp.setup {
+})
+vim.lsp.enable('bashls')
+vim.lsp.enable('html')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('marksman')
+vim.lsp.enable('cssls')
+vim.lsp.enable('pyright')
+vim.lsp.config('pylsp', {
     settings = {
         pylsp = {
             plugins = {
@@ -174,10 +173,11 @@ nvim_lsp.pylsp.setup {
             }
         }
     }
-}
-nvim_lsp.yamlls.setup {}
-nvim_lsp.dockerls.setup {}
-nvim_lsp.clangd.setup {
+})
+vim.lsp.enable('pylsp')
+vim.lsp.enable('yamlls')
+vim.lsp.enable('dockerls')
+vim.lsp.config('clangd', {
     cmd = {
         "clangd-21",
         "-j", "8",
@@ -189,22 +189,24 @@ nvim_lsp.clangd.setup {
         "--background-index",
         "--background-index-priority=low",
     },
-}
-nvim_lsp.dotls.setup {}
-nvim_lsp.terraformls.setup {}
-nvim_lsp.tflint.setup {}
--- nvim_lsp.eslint.setup {}
-nvim_lsp.prismals.setup {}
-nvim_lsp.lua_ls.setup {
+})
+vim.lsp.enable('clangd')
+vim.lsp.enable('dotls')
+vim.lsp.enable('terraformls')
+vim.lsp.enable('tflint')
+-- vim.lsp.enable('eslint')
+vim.lsp.enable('prismals')
+vim.lsp.config('lua_ls', {
     settings = {
         Lua = {
             telemetry = { enable = false },
             hint = { enable = true }
         },
     },
-}
-nvim_lsp.oxlint.setup {}
-nvim_lsp.csharp_ls.setup {
+})
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('oxlint')
+vim.lsp.config('csharp_ls', {
     settings = {
         inlayHintsOptions = {
             enableForParameters = false,
@@ -276,7 +278,8 @@ nvim_lsp.csharp_ls.setup {
             NewLineForClausesInQuery = true
         }
     }
-}
+})
+vim.lsp.enable('csharp_ls')
 
 require "fidget".setup {
     notification = {

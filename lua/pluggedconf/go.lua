@@ -116,4 +116,4 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 local cfg = require'go.lsp'.config() -- config() return the go.nvim gopls setup
 
-require('lspconfig').gopls.setup(cfg)
+vim.lsp.config('gopls', cfg)

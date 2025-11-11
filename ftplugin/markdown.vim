@@ -8,7 +8,7 @@ for file in split(glob("~/nvim/pluggedconf/md/*.nvimrc"), '\n')
     exe 'source' file
 endfor
 
-set number norelativenumber
+"set number norelativenumber
 set spell
 
 " cancel the number toggled defined in init file
