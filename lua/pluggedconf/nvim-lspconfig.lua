@@ -90,8 +90,7 @@ require("neodev").setup({
     -- for your Neovim config directory, the config.library settings will be used as is
     -- for plugin directories (root_dirs having a /lua directory), config.library.plugins will be disabled
     -- for any other directory, config.library.enabled will be set to false
-    override = function()
-    end,
+    override = function() end,
     lspconfig = true,
     pathStrict = true,
     debug = false,
@@ -128,30 +127,22 @@ vim.lsp.config('rust_analyzer', {
     settings = {
         ["rust-analyzer"] = {
             imports = {
-                granularity = {
-                    group = "module",
-                },
+                granularity = { group = "module" },
                 prefix = "self",
             },
             cargo = {
-                buildScripts = {
-                    enable = true,
-                },
+                buildScripts = { enable = true },
             },
-            procMacro = {
-                enable = true,
-            },
+            procMacro = { enable = true },
             diagnostics = {
-                experimental = {
-                    enable = true
-                }
+                experimental = { enable = true }
             },
         }
     }
 })
 vim.lsp.enable('rust_analyzer')
 vim.lsp.config('bashls', {
-    cmd = { vim.env.HOME .. '/.local/bin/' .. 'bash-language-server', 'start' },
+    cmd = { vim.env.HOME .. '/.local/bin/bash-language-server', 'start' },
 })
 vim.lsp.enable('bashls')
 vim.lsp.enable('html')
@@ -304,9 +295,7 @@ end
 
 cmp.setup({
     snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
+        expand = function(args) luasnip.lsp_expand(args.body) end,
     },
     mapping = {
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -333,7 +322,6 @@ cmp.setup({
                 fallback()
             end
         end, { "i", "s" }),
-
         ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
@@ -378,7 +366,6 @@ cmp.setup({
     },
     experimental = { ghost_text = { hl_group = 'CommentHighlightGroup' } },
 })
-
 
 cmp.setup.filetype({ "sql" }, {
     sources = {
