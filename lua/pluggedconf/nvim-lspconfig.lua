@@ -10,9 +10,15 @@ vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.o.signcolumn = "yes"
 vim.o.completeopt = "menu,menuone,noselect"
 
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-    pattern = { "*" },
-    command = "lua vim.diagnostic.open_float({ focusable = false })",
+vim.api.nvim_create_autocmd("CursorHold", {
+    pattern = "*",
+    callback = function()
+        vim.diagnostic.open_float(nil, {
+            border = "single",
+            focusable = false,
+            max_width = 120,
+        })
+    end,
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -22,9 +28,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = { "*.tf", "*.tfvars" },
-    callback = function()
-        vim.lsp.buf.formatting_sync()
-    end,
+    callback = function() vim.lsp.buf.formatting_sync() end,
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -276,9 +280,7 @@ vim.lsp.enable('csharp_ls')
 
 require "fidget".setup {
     notification = {
-        window = {
-            winblend = 0,
-        },
+        window = { winblend = 0 },
     },
 }
 
