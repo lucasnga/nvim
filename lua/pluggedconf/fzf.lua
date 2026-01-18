@@ -72,7 +72,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
     -- ripgrep - ignore the files defined in ignore files (.gitignore...) and doesn't ignore case
     vim.api.nvim_create_user_command('Rgic', function(args)
-      vim.call('fzf#vim#grep', fzf_cmd .. '--fixed-strings' .. fzf_args(args.args), 1, bang_state(args.bang_state),
+      vim.call('fzf#vim#grep', fzf_cmd .. '--fixed-strings ' .. fzf_args(args.args), 1, bang_state(args.bang_state),
         args.bang)
     end, cb_opts)
 
@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
     -- ripgrep - ignore the files defined in ignore files (.gitignore...) and doesn't ignore case and activate regex search
     vim.api.nvim_create_user_command('Rgr', function(args)
-      vim.call('fzf#vim#grep', fzf_cmd .. '--no-ignore' .. fzf_args(args.args), 1, bang_state(args.bang_state), args
+      vim.call('fzf#vim#grep', fzf_cmd .. '--no-ignore ' .. fzf_args(args.args), 1, bang_state(args.bang_state), args
         .bang)
     end, cb_opts)
   end,
