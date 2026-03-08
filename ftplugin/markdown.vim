@@ -10,6 +10,7 @@ endfor
 
 "set number norelativenumber
 set spell
+set spelllang=pl,en
 
 " cancel the number toggled defined in init file
 augroup mdnumbertoggle
