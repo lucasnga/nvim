@@ -194,6 +194,7 @@ vim.lsp.config('clangd', {
         "--rename-file-limit=0",
         "--background-index",
         "--background-index-priority=low",
+        "--pch-storage=memory",
     },
 })
 vim.lsp.enable('clangd')
