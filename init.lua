@@ -207,15 +207,21 @@ vim.keymap.set("c", "w!!", 'execute :w suda://%', { noremap = true })
 -- | general config |
 -- +----------------+
 
+local term = vim.env.TERM or ""
+local colorterm = vim.env.COLORTERM or ""
+local session = vim.env.XDG_SESSION_TYPE or ""
+
+if term == "linux" or term == "fbterm" or term == "screen" or session == "tty" then
+  vim.opt.termguicolors = false
+else
+  if colorterm == "truecolor" or colorterm == "24bit" then
+    vim.opt.termguicolors = true
+  end
+end
+
 vim.g.sonokai_style = 'shusia'
 -- vim.g.sonokai_better_performance = 1
 vim.cmd.colorscheme("sonokai")
-
-if vim.env.TERM == "fbterm" then
-    vim.opt.termguicolors = false
-else
-    vim.opt.termguicolors = true
-end
 
 vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE", ctermbg = "NONE" })
 vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
