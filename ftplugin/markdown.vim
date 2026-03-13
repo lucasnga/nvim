@@ -21,7 +21,7 @@ augroup END
 
 let g:tagbar_type_markdown = {
     \ 'ctagstype': 'markdown',
-    \ 'ctagsbin' : '/usr/bin/markdown2ctags',
+    \ 'ctagsbin' : '/usr/local/bin/markdown2ctags',
     \ 'ctagsargs' : '-f - --sort=yes',
     \ 'kinds' : [
         \ 's:sections',
