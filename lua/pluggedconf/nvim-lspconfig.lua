@@ -288,6 +288,20 @@ vim.lsp.config('csharp_ls', {
 })
 vim.lsp.enable('csharp_ls')
 
+vim.lsp.config('jdtls', {
+    cmd = { "jdtls" },
+    filetypes = { "java" }
+})
+vim.lsp.enable('jdtls')
+
+vim.lsp.config('kotlin_language_server', {
+    cmd = { "kotlin-language-server" },
+    filetypes = { "kotlin" }
+})
+vim.lsp.enable('kotlin_language_server')
+
+vim.lsp.enable('mason')
+
 require "fidget".setup {
     notification = {
         window = { winblend = 0 },
