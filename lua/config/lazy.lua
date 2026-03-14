@@ -152,6 +152,7 @@ require("lazy").setup({
         'nvim-neotest/nvim-nio',
         'rcarriga/nvim-dap-ui',
         'gsuuon/model.nvim',
+        'mfussenegger/nvim-jdtls',
 
         -- add your plugins here
     },

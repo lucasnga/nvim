@@ -289,18 +289,35 @@ vim.lsp.config('csharp_ls', {
 vim.lsp.enable('csharp_ls')
 
 vim.lsp.config('jdtls', {
-    cmd = { "jdtls" },
-    filetypes = { "java" }
+    cmd = {
+        "/usr/lib/jvm/temurin-21-jdk/bin/java",
+        "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+        "-Dosgi.bundles.defaultStartLevel=4",
+        "-Declipse.product=org.eclipse.jdt.ls.core.product",
+        "-Dlog.level=ALL",
+        "-Xmx1G",
+        "-jar", "/opt/jdtls/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+        "-configuration", os.getenv("HOME") .. '/.jdtls/config_linux',
+        "-data", os.getenv("HOME") .. "/.jdtls/workspace/",
+    },
+
+    root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
+    settings = {
+        java = {
+            signatureHelp = { enabled = true },
+            contentProvider = { preferred = 'fernflower' },
+        }
+    },
 })
+
 vim.lsp.enable('jdtls')
 
-vim.lsp.config('kotlin_language_server', {
-    cmd = { "kotlin-language-server" },
-    filetypes = { "kotlin" }
+vim.lsp.config('kotlin_lsp', {
+    cmd = { "kotlin-lsp.sh", '--stdio' },
 })
-vim.lsp.enable('kotlin_language_server')
+vim.lsp.enable('kotlin_lsp')
 
-vim.lsp.enable('mason')
+vim.lsp.enable('mesonlsp')
 
 require "fidget".setup {
     notification = {

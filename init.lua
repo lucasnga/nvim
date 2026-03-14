@@ -333,8 +333,6 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o"
 })
 
-
--- xxxxx
 -- highlight EndOfBuffer guibg=NONE ctermbg=NONE
 -- highlight Normal guibg=None ctermbg=238
 -- highlight SignColumn ctermbg=NONE guibg=NONE
@@ -342,5 +340,3 @@ vim.api.nvim_create_autocmd("FileType", {
 -- highlight ColorColumn ctermbg=238
 -- " " hi VirtualTextError guifg=darkred guibg=lightgrey
 -- hi LspInlayHint guifg=#d8d8d8 guibg=#4a4a3a
---
--- xxxxx
