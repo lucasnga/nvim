@@ -25,33 +25,33 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
     spec = {
         'nvim-lua/plenary.nvim',
-        'tmux-plugins/vim-tmux',                       -- syntax highlighting for tmux.conf + other cool options
+        'tmux-plugins/vim-tmux',                                                      -- syntax highlighting for tmux.conf + other cool options
         'tmux-plugins/vim-tmux-focus-events',
-        'christoomey/vim-tmux-navigator',              -- seemless navigation between vim windows / tmux pane
+        'christoomey/vim-tmux-navigator',                                             -- seemless navigation between vim windows / tmux pane
         'tpope/vim-obsession',
-        'tpope/vim-fugitive',                          -- wrapper for git and display git diff in the left gutter
+        { 'tpope/vim-fugitive', cmd = { "Git", "G" } },                               -- wrapper for git and display git diff in the left gutter
         'mhinz/vim-signify',
-        'tpope/vim-rhubarb',                           -- fugitive for the hub
-        'junegunn/gv.vim',                             -- Display commits for project / file
-        'tpope/vim-surround',                          -- surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
-        'tpope/vim-abolish',                           -- easily search, substitute and abbreviate multiple version of words
-        'tpope/vim-repeat',                            -- the . command can repeat whatever you want!
-        'tpope/vim-speeddating',
-        'machakann/vim-swap',                          -- swap arguments in parenthesis
-        'wellle/targets.vim',                          -- add new text object (can delete between comma with di, for example)
-        'chaoren/vim-wordmotion',                      -- camel case motion
-        'andymass/vim-matchup',                        -- Match more stuff with % (html tag, LaTeX...)
-        'amiorin/vim-project',                         -- vim project for one specific vimrc / project + startify for startup cow
+        'tpope/vim-rhubarb',                                                          -- fugitive for the hub
+        { 'junegunn/gv.vim',    cmd = "GV" },                                         -- Display commits for project / file
+        'tpope/vim-surround',                                                         -- surrounding text objects with whatever you want (paranthesis, quotes, html tags...)
+        'tpope/vim-abolish',                                                          -- easily search, substitute and abbreviate multiple version of words
+        'tpope/vim-repeat',                                                           -- the . command can repeat whatever you want!
+        { 'tpope/vim-speeddating',  keys = { "<C-a>", "<C-x>" } },
+        'machakann/vim-swap',                                                         -- swap arguments in parenthesis
+        'wellle/targets.vim',                                                         -- add new text object (can delete between comma with di, for example)
+        'chaoren/vim-wordmotion',                                                     -- camel case motion
+        'andymass/vim-matchup',                                                       -- Match more stuff with % (html tag, LaTeX...)
+        'amiorin/vim-project',                                                        -- vim project for one specific vimrc / project + startify for startup cow
         'mhinz/vim-startify',
-        'godlygeek/tabular',                           -- Align plugin
-        { 'junegunn/goyo.vim',      ft = 'markdown' }, -- Distraction-free
+        'godlygeek/tabular',                                                          -- Align plugin
+        { 'junegunn/goyo.vim',      ft = 'markdown' },                                -- Distraction-free
 
-        { 'junegunn/limelight.vim', ft = 'markdown' }, -- Hyperfocus-writing
-        { 'rhysd/vim-grammarous',   ft = 'markdown' }, -- show grammar mistakes
-        'reedes/vim-wordy',                            -- Verify quality of writting (see :Wordy)
-        'reedes/vim-lexical',                          -- Dictionnary, thesaurus...
-        'ron89/thesaurus_query.vim',                   -- Thesaurus
-        { 'iamcco/markdown-preview.nvim', ft = 'markdown', build = 'mkdp#util#install' },
+        { 'junegunn/limelight.vim', ft = 'markdown' },                                -- Hyperfocus-writing
+        { 'rhysd/vim-grammarous',   ft = 'markdown' },                                -- show grammar mistakes
+        { 'reedes/vim-wordy',       cmd = { "Wordy", "NoWordy" } },                   -- Verify quality of writting (see :Wordy)
+        'reedes/vim-lexical',                                                         -- Dictionnary, thesaurus...
+        { 'ron89/thesaurus_query.vim',    cmd = "ThesaurusQueryReplaceCurrentWord" }, -- Thesaurus
+        { 'iamcco/markdown-preview.nvim', ft = 'markdown',                         build = 'mkdp#util#install' },
         { 'lukas-reineke/headlines.nvim', ft = 'markdown' },
         'chr4/nginx.vim', -- nginx syntax colors
         'Darazaki/indent-o-matic',
@@ -62,43 +62,53 @@ require("lazy").setup({
         { 'adoy/vim-php-refactoring-toolbox', ft = 'php' },
         { 'phpactor/phpactor',                ft = 'php', build = 'composer install' },
         'windwp/nvim-autopairs',
-        'windwp/nvim-ts-autotag',
-
+        {
+            "windwp/nvim-ts-autotag",
+            ft = { "html", "xml", "javascriptreact", "typescriptreact", "svelte", "vue" },
+            dependencies = { "nvim-treesitter/nvim-treesitter" },
+            config = function()
+                require("nvim-ts-autotag").setup()
+            end,
+        },
         'neovim/nvim-lspconfig',
         'nvimtools/none-ls.nvim',
         'nvimtools/none-ls-extras.nvim',
-        { 'ray-x/go.nvim',    ft = 'go' },
+        { 'ray-x/go.nvim',     ft = 'go' },
         'ray-x/guihua.lua',
-        { 'sebdah/vim-delve', ft = 'go' }, -- debugger
+        { 'sebdah/vim-delve',  ft = 'go' }, -- debugger
         -- BUG: Posible performance issues
         -- "'mlaursen/vim-react-snippets'
         -- 'posva/vim-vue' " For Vue
-        'majutsushi/tagbar', -- outliner
+        { 'majutsushi/tagbar', cmd = "TagbarToggle" }, -- outliner
         'liuchengxu/vista.vim',
-        'nvim-tree/nvim-tree.lua',
+        { 'nvim-tree/nvim-tree.lua', cmd = { "NvimTreeToggle", "NvimTreeFocus" } },
         'antosha417/nvim-lsp-file-operations',
-        'itchyny/lightline.vim',                                                                 -- status bar
-        'simnalamburt/vim-mundo',                                                                -- undo tree
-        'bfredl/nvim-miniyank',                                                                  -- registers
-        'moll/vim-bbye',                                                                         -- close the current buffer
-        'wgwoods/vim-systemd-syntax',                                                            -- systemd syntax and error
-        { 'mattn/emmet-vim', ft = 'html' },                                                      -- emmet for html
-        { 'junegunn/fzf',    dir = '~/.fzf', build = 'fzf#install()' },                          -- fzf - poweful fuzzy finder
-        'junegunn/fzf.vim',
-        'wincent/ferret',                                                                        -- allow multisearch in current directory / multi replace as well
-        'ap/vim-css-color',                                                                      -- display the hexadecimal colors - useful for css and color config
-        'simeji/winresizer',                                                                     -- easy way to rezise and exchange windows
-        'yangmillstheory/vim-snipe',                                                             -- replace f F t T to target easily the motion
-        'AndrewRadev/splitjoin.vim',                                                             -- Split arrays in PHP / struct in Go / other things
+        'itchyny/lightline.vim',                                        -- status bar
+        { 'simnalamburt/vim-mundo',  cmd = "UndotreeToggle" },          -- undo tree
+        'bfredl/nvim-miniyank',                                         -- registers
+        'moll/vim-bbye',                                                -- close the current buffer
+        'wgwoods/vim-systemd-syntax',                                   -- systemd syntax and error
+        { 'mattn/emmet-vim', ft = 'html' },                             -- emmet for html
+        { 'junegunn/fzf',    dir = '~/.fzf', build = 'fzf#install()' }, -- fzf - poweful fuzzy finder
+        { 'junegunn/fzf.vim' },
+        'wincent/ferret',                                               -- allow multisearch in current directory / multi replace as well
+        'ap/vim-css-color',                                             -- display the hexadecimal colors - useful for css and color config
+        'simeji/winresizer',                                            -- easy way to rezise and exchange windows
+        'yangmillstheory/vim-snipe',                                    -- replace f F t T to target easily the motion
+        'AndrewRadev/splitjoin.vim',                                    -- Split arrays in PHP / struct in Go / other things
         -- TODO: GO up and find replacements
-        { 'chrisbra/csv.vim', ft = 'csv' },                                                      -- CSV plugin
-        'blueyed/vim-diminactive',                                                               -- Plug to dim not-focused windows
-        'lambdalisue/suda.vim',                                                                  -- Write file with sudo
-        'junegunn/vim-peekaboo',                                                                 -- Display register values on \" and @
+        { 'chrisbra/csv.vim',           ft = 'csv' },                   -- CSV plugin
+        'blueyed/vim-diminactive',                                      -- Plug to dim not-focused windows
+        'lambdalisue/suda.vim',                                         -- Write file with sudo
+        'junegunn/vim-peekaboo',                                        -- Display register values on \" and @
         'phux/vim-hardtime',
-        { 'L3MON4D3/LuaSnip', version = 'v2.*', build = "make install_jsregexp" },
-        'saadparwaiz1/cmp_luasnip',
-        'rafamadriz/friendly-snippets',
+        {
+            'L3MON4D3/LuaSnip',
+            version = 'v2.*',
+            build = "make install_jsregexp",
+            event = "InsertEnter",
+            dependencies = { "rafamadriz/friendly-snippets", 'saadparwaiz1/cmp_luasnip' },
+        },
         { 'fsharp/vim-fsharp',          ft = 'fsharp',   build = 'make fsautocomplete' },
         { 'rust-lang/rust.vim',         ft = 'rust' },
         { 'simrat39/rust-tools.nvim',   ft = 'rust' },
@@ -147,10 +157,11 @@ require("lazy").setup({
         'drzel/quakec.vim', -- quakeC
 
         -- debuggerers
-        'vim-vdebug/vdebug',
+        { 'vim-vdebug/vdebug',               cmd = { "VdebugStart" }, },
         'mfussenegger/nvim-dap',
         'nvim-neotest/nvim-nio',
-        'rcarriga/nvim-dap-ui',
+        { 'rcarriga/nvim-dap-ui', cmd = { "DapToggleUI" }, },
+
         'gsuuon/model.nvim',
         'mfussenegger/nvim-jdtls',
 
